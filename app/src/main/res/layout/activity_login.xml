@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Activity_Login"
+    >
+
+    <TextView
+        android:id="@+id/login_TXT_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/ubuntu_condensed_regular"
+        android:layout_marginTop="30dp"
+        android:text="Workout\n Parks"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        >
+    </TextView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/login_EDT_phone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/login_TXT_title"
+        android:hint="@string/phone_number"
+        app:boxStrokeColor="@color/main_color"
+        app:hintTextColor="@color/main_color"
+        app:placeholderTextColor="@color/main_color"
+        app:counterTextColor="@color/main_color"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="phone"
+            android:textColorHint="@color/grey"
+            android:textColor="@color/main_color"
+            android:textCursorDrawable="@color/black"
+            >
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login_BTN_continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_EDT_phone"
+        android:layout_centerInParent="true"
+        android:text="@string/continue_"
+        app:cornerRadius="150dp"
+        app:strokeColor="@color/main_color"
+        android:textColor="@color/white"
+        app:rippleColor="@color/main_color"
+        android:backgroundTint="@color/main_color"
+        >
+    </com.google.android.material.button.MaterialButton>
+
+    <ImageView
+        android:id="@+id/login_IMG_park"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/sportsman"
+        >
+    </ImageView>
+
+
+
+</RelativeLayout>

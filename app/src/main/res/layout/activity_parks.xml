@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Activity_Parks">
+
+    <TextView
+        android:id="@+id/parks_TXT_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Parks"
+        android:textStyle="bold"
+        android:textAllCaps="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp"
+        >
+    </TextView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/parks_LAY_map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_below="@+id/parks_TXT_title"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+
+        app:cardCornerRadius="20dp"
+        android:elevation="5dp"
+        app:cardElevation="5dp"
+        >
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>
