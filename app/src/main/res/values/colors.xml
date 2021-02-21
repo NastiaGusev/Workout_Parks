@@ -11,5 +11,18 @@
     <color name="main_color">#07B6A5</color>
     <color name="secondary_color">#68E3D7</color>
     <color name="grey">#636766</color>
+    <color name="light_grey">#989898</color>
+    <color name="light_grey2">#C0C0C0</color>
+    <color name="light_grey3">#EFEFEF</color>
+
+    <color name="yellow">#FBD769</color>
+    <color name="darkyellow">#DD9B29</color>
+
+    <color name="lighgreen">#BFD3AD</color>
+    <color name="green">#89AF67</color>
+    <color name="lightred">#E49F9F</color>
+    <color name="red">#FF6565</color>
+
+    <color name="turquoise">#79BCA0</color>
 
 </resources>

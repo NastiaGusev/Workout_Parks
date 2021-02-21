@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey3"
     tools:context=".activities.Activity_Home">
 
     <TextView
@@ -13,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="Welcome Back!"
+        android:text=""
         android:textColor="@color/grey"
         android:textSize="20sp"
         android:textStyle="italic"
@@ -24,7 +25,7 @@
         android:id="@+id/login_IMG_user"
         android:layout_width="58dp"
         android:layout_height="58dp"
-        android:src="@drawable/user"
+        android:src="@drawable/img_user"
         app:shapeAppearanceOverlay="@style/CircleImageView"
         android:layout_below="@+id/home_LBL_welcome"
         android:layout_centerHorizontal="true"
@@ -38,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_IMG_user"
         android:layout_centerHorizontal="true"
-        android:text="User User"
+        android:text=""
         android:textColor="@color/grey"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -51,7 +52,7 @@
         android:id="@+id/home_IMG_parks"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/icon"
+        android:src="@drawable/img_icon"
         android:layout_marginTop="50dp"
         android:layout_marginStart="40dp"
         android:layout_below="@+id/post_LBL_user"
@@ -79,7 +80,7 @@
         android:id="@+id/home_IMG_favorites"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/star"
+        android:src="@drawable/img_star"
         android:layout_alignTop="@+id/home_IMG_parks"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="40dp"
@@ -110,7 +111,7 @@
         android:layout_below="@+id/home_BTN_favorites"
         android:layout_alignEnd="@+id/home_IMG_favorites"
         android:layout_marginTop="50dp"
-        android:src="@drawable/settings">
+        android:src="@drawable/img_settings">
 
     </ImageView>
 
@@ -134,7 +135,7 @@
         android:id="@+id/home_IMG_friends"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/friends"
+        android:src="@drawable/img_friends"
         android:layout_below="@+id/home_BTN_parks"
         android:layout_marginTop="50dp"
         android:layout_alignStart="@+id/home_IMG_parks"
@@ -154,6 +155,23 @@
         android:textColor="@color/white"
         app:rippleColor="@color/main_color"
         android:backgroundTint="@color/main_color"
+        >
+    </com.google.android.material.button.MaterialButton>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/home_BTN_signout"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:layout_centerHorizontal="true"
+        android:text="Sign out"
+        android:textSize="11sp"
+        app:cornerRadius="150dp"
+        app:strokeColor="@color/red"
+        android:textColor="@color/white"
+        app:rippleColor="@color/red"
+        android:backgroundTint="@color/red"
         >
     </com.google.android.material.button.MaterialButton>
 

@@ -2,6 +2,7 @@ package com.example.workoutparks.activities;
 
 import androidx.annotation.NonNull;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -134,6 +135,8 @@ public class Activity_Login extends Activity_Base {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d("pttt", "signInWithCredential:success");
+                            Intent myIntent = new Intent(Activity_Login.this, Activity_Home.class);
+                            startActivity(myIntent);
                             finish();
                         } else {
                             Log.w("pttt", "signInWithCredential:failure", task.getException());

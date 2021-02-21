@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:elevation="10dp"
+    android:elevation="30dp"
     app:cardCornerRadius="20dp"
-    app:cardElevation="10dp"
+    app:cardElevation="30dp"
     tools:context=".activities.Activity_Parks">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="100dp">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/popup_TXT_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:text="This is a popup window."
-            android:textSize="15sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -35,19 +37,58 @@
             android:textSize="13sp"
              />
 
+        <RatingBar
+            android:id="@+id/popup_RTB_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/popup_TXT_distance"
+            android:layout_alignStart="@+id/popup_TXT_title"
+            android:layout_marginBottom="10dp"
+            android:stepSize="0.5"
+            android:numStars="5"
+            style ="@style/Widget.AppCompat.RatingBar.Indicator"
+            android:progressTint="@color/yellow"
+            android:secondaryProgressTint="@color/yellow"
+            />
+
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/popup_BTN_show"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="10dp"
-            android:text="show more"
+            android:layout_below="@+id/popup_TXT_distance"
+            android:layout_marginEnd="6dp"
+            android:text="more"
             android:textColor="@color/main_color"
-            android:textSize="11sp"
+            android:textSize="14sp"
             app:rippleColor="@color/secondary_color"
             >
         </com.google.android.material.button.MaterialButton>
+
+        <ImageView
+            android:id="@+id/popup_IMG_person"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/img_person_silhouette"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="15dp"
+            android:layout_alignStart="@+id/popup_BTN_show"
+            android:layout_marginStart="20dp"
+            >
+        </ImageView>
+
+        <TextView
+            android:id="@+id/popup_TXT_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/popup_IMG_person"
+            android:text="10"
+            android:layout_alignTop="@+id/popup_IMG_person"
+            android:layout_marginTop="2dp"
+            android:textSize="17sp"
+            >
+        </TextView>
 
     </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

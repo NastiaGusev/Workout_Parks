@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_grey3"
     tools:context=".activities.Activity_Login"
     >
 
@@ -71,7 +72,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="30dp"
         android:layout_centerInParent="true"
-        android:src="@drawable/sportsman"
+        android:src="@drawable/img_sportsman"
         >
     </ImageView>
 

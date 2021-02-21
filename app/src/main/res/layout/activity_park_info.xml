@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey3"
+    tools:context=".activities.Activity_ParkInfo">
+
+    <ImageButton
+        android:id="@+id/parkInfo_BTN_addToFav"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_alignTop="@+id/parkInfo_TXT_parkTitle"
+        android:layout_toStartOf="@+id/parkInfo_TXT_parkTitle"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/transparent"
+        android:focusableInTouchMode="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/img_emptylike">
+
+    </ImageButton>
+
+    <TextView
+        android:id="@+id/parkInfo_TXT_parkTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Title"
+        android:textSize="25sp"
+        android:textStyle="bold">
+    </TextView>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/parkInfo_TXT_parkTitle"
+        android:orientation="vertical">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/parkInfo_LAY_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+
+            app:cardCornerRadius="17dp"
+            android:elevation="5dp"
+            app:cardElevation="5dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/parkInfo_TXT_parkAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+
+                    android:textStyle="bold"
+                    android:text="Burla Yhuda 21"
+                    android:textSize="18sp">
+
+                </TextView>
+
+                <ImageButton
+                    android:id="@+id/parkInfo_IBTN_chat"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+
+                    android:background="@android:color/transparent"
+                    android:focusableInTouchMode="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/img_speech_bubble">
+                </ImageButton>
+
+                <RatingBar
+                    android:id="@+id/parkInfo_RTB_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/parkInfo_TXT_parkAddress"
+                    android:layout_alignStart="@+id/parkInfo_TXT_parkAddress"
+                    android:layout_marginStart="-30dp"
+                    android:numStars="5"
+                    android:progressTint="@color/yellow"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:secondaryProgressTint="@color/yellow"
+                    android:stepSize="0.5" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/parkInfo_BTN_checkIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:rippleColor="@color/light_grey2"
+                    android:backgroundTint="@color/lightred"
+                    android:clickable="true"
+
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+
+                    app:cardCornerRadius="20dp"
+                    android:elevation="10dp"
+                    app:cardElevation="10dp"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/parkInfo_IMG_placeholder"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/img_placeholder"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="10dp"
+                            >
+                        </ImageView>
+
+                        <TextView
+                            android:id="@+id/parkInfo_TXT_checkIn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:layout_marginStart="7dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:layout_toEndOf="@+id/parkInfo_IMG_placeholder"
+
+                            android:text="Check in"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/red"
+                            android:textAllCaps="true">
+                        </TextView>
+                    </RelativeLayout>
+
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </RelativeLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <FrameLayout
+            android:id="@+id/parkInfo_LAY_userList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:layout_weight="3"
+            android:background="@color/yellow">
+
+        </FrameLayout>
+    </LinearLayout>
+
+</RelativeLayout>
