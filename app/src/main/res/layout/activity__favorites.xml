@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey3"
-    tools:context=".activities.Activity_Parks"
-   >
+    tools:context=".activities.Activity_Favorites">
 
     <TextView
-        android:id="@+id/parks_TXT_title"
+        android:id="@+id/favorites_TXT_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Parks"
+        android:text="favorites"
         android:textStyle="bold"
         android:textAllCaps="true"
         android:layout_centerHorizontal="true"
@@ -22,42 +21,33 @@
         >
     </TextView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/parks_LAY_map"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/favorites_LST_userList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:layout_below="@+id/parks_TXT_title"
+        android:layout_below="@+id/favorites_TXT_title"
         android:layout_above="@+id/favorites_LAY_menu"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
+        android:background="@color/light_grey3"
+        tools:listitem= "@layout/list_parkfav">
 
-        app:cardCornerRadius="20dp"
-        android:elevation="5dp"
-        app:cardElevation="5dp"
-        >
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/favorites_LAY_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
         >
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 >
-
                 <ImageButton
                     android:id="@+id/favorites_BTN_home"
                     android:layout_width="30dp"
@@ -75,7 +65,7 @@
                     android:id="@+id/favorites_BTN_parks"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/img_location2"
+                    android:src="@drawable/img_location"
                     android:background="@android:color/transparent"
                     android:clickable="true"
                     android:scaleType="centerCrop"
@@ -103,7 +93,7 @@
                     android:id="@+id/favorites_BTN_favorites"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/img_favorite_24"
+                    android:src="@drawable/img_favorite_2"
                     android:background="@android:color/transparent"
                     android:clickable="true"
                     android:scaleType="centerCrop"

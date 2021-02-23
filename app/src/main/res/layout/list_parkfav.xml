@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+
+    app:cardCornerRadius="20dp"
+    android:elevation="5dp"
+    app:cardElevation="5dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageButton
+            android:id="@+id/parkfav_BTN_addToFav"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@android:color/transparent"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:focusableInTouchMode="false"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_like">
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/parkfav_TXT_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/parkfav_BTN_addToFav"
+           android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:text="This is a popup window."
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/parkfav_BTN_showpark"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+
+            android:text="more"
+            android:textColor="@color/turquoise"
+            app:rippleColor="@color/turquoise"
+            android:textSize="14sp"
+
+            >
+        </com.google.android.material.button.MaterialButton>
+
+
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

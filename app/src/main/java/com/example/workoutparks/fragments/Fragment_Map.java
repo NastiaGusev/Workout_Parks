@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +46,6 @@ public class Fragment_Map extends Fragment {
         }
     };
 
-    public void stopFragment(){
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -76,13 +73,14 @@ public class Fragment_Map extends Fragment {
 
     public boolean showUser(double lat, double lon) {
         MarkerOptions newPosition = new MarkerOptions().position(new LatLng(lat, lon));
-        if (getDistance(newPosition.getPosition().latitude, newPosition.getPosition().longitude) > 10 || userMarker == null) {
+        if (getDistance(newPosition.getPosition().latitude, newPosition.getPosition().longitude) > 400| userMarker == null) {
+            Log.d("TAG", "users distance: " + getDistance(newPosition.getPosition().latitude, newPosition.getPosition().longitude) );
             if (userMarker != null) {
                 userMarker.remove();
                 userMarker = gMap.addMarker(newPosition);
             } else {
                 userMarker = gMap.addMarker(newPosition);
-                gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userMarker.getPosition(), 15f));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userMarker.getPosition(), 15f));
             }
             return true;
         }
@@ -101,6 +99,7 @@ public class Fragment_Map extends Fragment {
                 if (m.getTag() != null){
                     changeColorMarker(m);
                     m.showInfoWindow();
+
                     gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(m.getPosition(), 15f));
                     callBack_parkPopup.showPopupWindow(""+m.getTag());
                     return true;

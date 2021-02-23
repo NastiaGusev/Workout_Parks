@@ -33,7 +33,6 @@ public class Park implements Serializable {
         for (String uid: users) {
             if(uid.equals(newUid)){
                 users.remove(uid);
-                Log.d("TAG", "removeUser: ");
             }
         }
     }

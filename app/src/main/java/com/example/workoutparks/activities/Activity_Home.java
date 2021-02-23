@@ -2,15 +2,13 @@ package com.example.workoutparks.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.workoutparks.R;
 import com.example.workoutparks.callbacks.CallBack_GetUserName;
 import com.example.workoutparks.objects.User;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,11 +21,15 @@ import com.google.firebase.database.ValueEventListener;
 public class Activity_Home extends Activity_Base {
 
     private final String users = "Users";
+    private User currentUser;
+
     private MaterialButton home_BTN_parks;
-    private MaterialButton home_BTN_signout;
+    private MaterialButton home_BTN_favorites;
+    private MaterialButton home_BTN_settings;
+    private ImageButton home_BTN_signout;
     private TextView post_LBL_user;
     private TextView home_LBL_welcome;
-    private User currentUser;
+
 
     private CallBack_GetUserName callBack_getUserName = new CallBack_GetUserName() {
         @Override
@@ -90,9 +92,11 @@ public class Activity_Home extends Activity_Base {
 
     private void findView() {
         home_BTN_parks = findViewById(R.id.home_BTN_parks);
-        post_LBL_user = findViewById(R.id.post_LBL_user);
+        post_LBL_user = findViewById(R.id.park_LBL_parkname);
         home_LBL_welcome = findViewById(R.id.home_LBL_welcome);
         home_BTN_signout =  findViewById(R.id.home_BTN_signout);
+        home_BTN_favorites = findViewById(R.id.home_BTN_favorites);
+        home_BTN_settings = findViewById(R.id.home_BTN_favorites);
     }
 
     private void initViews() {
@@ -101,6 +105,7 @@ public class Activity_Home extends Activity_Base {
             public void onClick(View v) {
                 Intent myIntent = new Intent(Activity_Home.this, Activity_Parks.class);
                 startActivity(myIntent);
+                finish();
             }
         });
 
@@ -114,6 +119,23 @@ public class Activity_Home extends Activity_Base {
                 finish();
             }
         });
+
+        home_BTN_favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Activity_Home.this, Activity_Favorites.class);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+
+        home_BTN_settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
 }

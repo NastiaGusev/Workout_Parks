@@ -16,7 +16,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/popup_TXT_title"
+            android:id="@+id/parkfav_TXT_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -27,22 +27,22 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/popup_TXT_distance"
+            android:id="@+id/parkfav_TXT_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/popup_TXT_title"
-            android:layout_alignStart="@+id/popup_TXT_title"
+            android:layout_below="@+id/parkfav_TXT_name"
+            android:layout_alignStart="@+id/parkfav_TXT_name"
             android:layout_marginStart="13dp"
             android:text="500m"
             android:textSize="13sp"
              />
 
         <RatingBar
-            android:id="@+id/popup_RTB_rating"
+            android:id="@+id/park_RTB_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/popup_TXT_distance"
-            android:layout_alignStart="@+id/popup_TXT_title"
+            android:layout_below="@+id/parkfav_TXT_distance"
+            android:layout_alignStart="@+id/parkfav_TXT_name"
             android:layout_marginBottom="10dp"
             android:stepSize="0.5"
             android:numStars="5"
@@ -52,12 +52,12 @@
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/popup_BTN_show"
+            android:id="@+id/parkfav_BTN_showpark"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/popup_TXT_distance"
+            android:layout_below="@+id/parkfav_TXT_distance"
             android:layout_marginEnd="6dp"
             android:text="more"
             android:textColor="@color/main_color"
@@ -67,24 +67,24 @@
         </com.google.android.material.button.MaterialButton>
 
         <ImageView
-            android:id="@+id/popup_IMG_person"
+            android:id="@+id/park_IMG_person"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:src="@drawable/img_person_silhouette"
             android:layout_alignParentTop="true"
             android:layout_marginTop="15dp"
-            android:layout_alignStart="@+id/popup_BTN_show"
+            android:layout_alignStart="@+id/parkfav_BTN_showpark"
             android:layout_marginStart="20dp"
             >
         </ImageView>
 
         <TextView
-            android:id="@+id/popup_TXT_people"
+            android:id="@+id/park_TXT_people"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/popup_IMG_person"
+            android:layout_toEndOf="@+id/park_IMG_person"
             android:text="10"
-            android:layout_alignTop="@+id/popup_IMG_person"
+            android:layout_alignTop="@+id/park_IMG_person"
             android:layout_marginTop="2dp"
             android:textSize="17sp"
             >

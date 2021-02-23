@@ -13,11 +13,12 @@
         android:layout_height="35dp"
         android:layout_alignTop="@+id/parkInfo_TXT_parkTitle"
         android:layout_toStartOf="@+id/parkInfo_TXT_parkTitle"
+        android:layout_above="@+id/parkinfo_LAY_layout"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:background="@android:color/transparent"
         android:focusableInTouchMode="false"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/img_emptylike">
 
     </ImageButton>
@@ -33,20 +34,20 @@
         android:textStyle="bold">
     </TextView>
 
-
-
     <LinearLayout
+        android:id="@+id/parkinfo_LAY_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/parkInfo_TXT_parkTitle"
+        android:layout_above="@+id/parkInfo_LAY_navigator"
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/parkInfo_LAY_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:layout_weight="3"
 
             app:cardCornerRadius="17dp"
             android:elevation="5dp"
@@ -108,7 +109,7 @@
 
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="10dp"
 
                     app:cardCornerRadius="20dp"
                     android:elevation="10dp"
@@ -154,15 +155,92 @@
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <FrameLayout
-            android:id="@+id/parkInfo_LAY_userList"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/parkInfo_LST_userList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="10dp"
-            android:layout_weight="3"
-            android:background="@color/yellow">
+            android:layout_weight="9"
+            android:background="@color/light_grey3"
+            tools:listitem= "@layout/list_user">
 
-        </FrameLayout>
+        </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/parkInfo_LAY_navigator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="5dp"
+        android:elevation="5dp"
+        app:cardElevation="5dp"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                >
+                <ImageButton
+                    android:id="@+id/favorites_BTN_home"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/img_home"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="8dp"
+                    >
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/favorites_BTN_parks"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/img_location"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:layout_toEndOf="@+id/favorites_BTN_home"
+                    android:layout_alignTop="@+id/favorites_BTN_home"
+                    android:layout_marginStart="48dp"
+                    >
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/favorites_BTN_chats"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/img_chat"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:layout_toEndOf="@+id/favorites_BTN_parks"
+                    android:layout_alignTop="@+id/favorites_BTN_home"
+                    android:layout_marginStart="48dp"
+                    >
+                </ImageButton>
+
+                <ImageButton
+                    android:id="@+id/favorites_BTN_favorites"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/img_favorite_24"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:scaleType="centerCrop"
+                    android:layout_toEndOf="@+id/favorites_BTN_chats"
+                    android:layout_alignTop="@+id/favorites_BTN_home"
+                    android:layout_marginStart="48dp"
+                    >
+                </ImageButton>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>

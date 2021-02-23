@@ -1,8 +1,8 @@
 package com.example.workoutparks.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,15 +38,21 @@ public class Activity_GroupChat extends Activity_Base {
     FirebaseDatabase dataBase;
     DatabaseReference messageDB;
 
-    Park thisPark;
-    String uid;
-    User user;
-    List<Message> messages;
-    Adapter_Message adapter_message;
-    RecyclerView groupChat_RCV_recycleView;
-    EditText groupChat_TXT_message;
-    ImageButton groupChat_IBTN_send;
-    TextView groupChat_TXT_title;
+    private Park thisPark;
+    private String uid;
+    private User user;
+    private List<Message> messages;
+    private Adapter_Message adapter_message;
+    private RecyclerView groupChat_RCV_recycleView;
+    private EditText groupChat_TXT_message;
+    private ImageButton groupChat_IBTN_send;
+    private ImageButton groupChat_BTN_back;
+    private TextView groupChat_TXT_title;
+
+    private ImageButton groupChat_BTN_home;
+    private ImageButton groupChat_BTN_parks;
+    private ImageButton groupChat_BTN_chats;
+    private ImageButton groupChat_BTN_favorites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,7 @@ public class Activity_GroupChat extends Activity_Base {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = snapshot.getValue(User.class);
                 findViews();
+                initViews();
                 readMessage();
             }
 
@@ -83,7 +90,46 @@ public class Activity_GroupChat extends Activity_Base {
         groupChat_TXT_message = findViewById(R.id.groupChat_TXT_message);
         groupChat_IBTN_send = findViewById(R.id.groupChat_IBTN_send);
         groupChat_TXT_title = findViewById(R.id.groupChat_TXT_title);
+        groupChat_BTN_back = findViewById(R.id.groupChat_BTN_back);
+
+        groupChat_BTN_home = findViewById(R.id.favorites_BTN_home);
+        groupChat_BTN_parks = findViewById(R.id.favorites_BTN_parks);
+        groupChat_BTN_chats = findViewById(R.id.favorites_BTN_chats);
+        groupChat_BTN_favorites = findViewById(R.id.favorites_BTN_favorites);
+
         groupChat_TXT_title.setText(thisPark.getName());
+    }
+
+    private void initViews(){
+        groupChat_BTN_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Activity_GroupChat.this, Activity_ParkInfo.class);
+                myIntent.putExtra(Activity_ParkInfo.PARK, thisPark);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+
+        groupChat_BTN_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                groupChat_BTN_home.setImageResource(R.drawable.img_home2);
+                Intent myIntent = new Intent(Activity_GroupChat.this, Activity_Home.class);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+
+        groupChat_BTN_parks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                groupChat_BTN_parks.setImageResource(R.drawable.img_location2);
+                Intent myIntent = new Intent(Activity_GroupChat.this, Activity_Parks.class);
+                startActivity(myIntent);
+                finish();
+            }
+        });
     }
 
     private void readMessage() {

@@ -1,24 +1,26 @@
 package com.example.workoutparks.objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private String uid = "";
     private String name = "";
     private String phone = "";
+    private String description = "";
+    private int age= 0;
+    private String gender = "";
     private String currentPark = "";
-    private List<String> favParks;
+    private double currentLat = 0.0;
+    private double currentLon = 0.0;
+    private ArrayList<String> favParks;
+    private ArrayList<String> friends;
 
     public User() {
         favParks = new ArrayList<>();
     }
 
-    public void setFavParks(List<String> favParks) {
-        this.favParks = favParks;
-    }
-
-    public void checkOutOfPark(){
+    public void checkOutOfPark() {
         setCurrentPark("no park");
     }
 
@@ -26,29 +28,63 @@ public class User {
         this.currentPark = currentPark;
     }
 
-    public boolean checkIfInPark(){
-        if (currentPark.equals("") || currentPark.equals("no park")){
+    public boolean checkIfInPark() {
+        if (currentPark.equals("") || currentPark.equals("no park")) {
             return false;
         }
         return true;
     }
 
-    public void addPark(String pid){
-        if(!checkIfParkInFav(pid)){
+    public void addPark(String pid) {
+        if (!checkIfParkInFav(pid)) {
             favParks.add(pid);
         }
     }
 
-    public boolean checkIfParkInFav(String newPid){
-        if(favParks.isEmpty()){
+    public void removePark(String pid) {
+        favParks.remove(pid);
+    }
+
+    public boolean checkIfParkInFav(String newPid) {
+        if (favParks.isEmpty()) {
             return false;
         }
-        for (String pid: favParks) {
-            if(pid.equals(newPid)){
+        for (String pid : favParks) {
+            if (pid.equals(newPid)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public void addFriend(String userid) {
+        if (!checkIfUserInFriends(userid)) {
+            friends.add(userid);
+        }
+    }
+
+    public void removeFriend(String userid) {
+        friends.remove(userid);
+    }
+
+    public boolean checkIfUserInFriends(String newUid) {
+        if (friends.isEmpty()) {
+            return false;
+        }
+        for (String uid : friends) {
+            if (uid.equals(newUid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setCurrentLat(double currentLat) {
+        this.currentLat = currentLat;
+    }
+
+    public void setCurrentLon(double currentLon) {
+        this.currentLon = currentLon;
     }
 
     public User setUid(String uid) {
@@ -78,11 +114,27 @@ public class User {
         return phone;
     }
 
-    public List<String> getFavParks() {
+    public ArrayList<String> getFavParks() {
         return favParks;
+    }
+
+    public ArrayList<String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(ArrayList<String> friends) {
+        this.friends = friends;
     }
 
     public String getCurrentPark() {
         return currentPark;
+    }
+
+    public double getCurrentLat() {
+        return currentLat;
+    }
+
+    public double getCurrentLon() {
+        return currentLon;
     }
 }

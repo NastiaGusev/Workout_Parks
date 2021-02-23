@@ -16,15 +16,29 @@
         android:layout_marginTop="20dp"
         android:text=""
         android:textColor="@color/grey"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="italic"
         >
     </TextView>
 
+    <ImageButton
+        android:id="@+id/home_BTN_signout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_signout"
+        android:background="@android:color/transparent"
+        android:focusableInTouchMode="false"
+        android:scaleType="fitCenter"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        >
+
+    </ImageButton>
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/login_IMG_user"
-        android:layout_width="58dp"
-        android:layout_height="58dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/img_user"
         app:shapeAppearanceOverlay="@style/CircleImageView"
         android:layout_below="@+id/home_LBL_welcome"
@@ -34,14 +48,14 @@
     </com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
-        android:id="@+id/post_LBL_user"
+        android:id="@+id/park_LBL_parkname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_IMG_user"
         android:layout_centerHorizontal="true"
         android:text=""
         android:textColor="@color/grey"
-        android:textSize="20sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         android:layout_marginLeft="20dp"
         >
@@ -55,7 +69,7 @@
         android:src="@drawable/img_icon"
         android:layout_marginTop="50dp"
         android:layout_marginStart="40dp"
-        android:layout_below="@+id/post_LBL_user"
+        android:layout_below="@+id/park_LBL_parkname"
         >
     </ImageView>
 
@@ -155,23 +169,6 @@
         android:textColor="@color/white"
         app:rippleColor="@color/main_color"
         android:backgroundTint="@color/main_color"
-        >
-    </com.google.android.material.button.MaterialButton>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_BTN_signout"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
-        android:layout_centerHorizontal="true"
-        android:text="Sign out"
-        android:textSize="11sp"
-        app:cornerRadius="150dp"
-        app:strokeColor="@color/red"
-        android:textColor="@color/white"
-        app:rippleColor="@color/red"
-        android:backgroundTint="@color/red"
         >
     </com.google.android.material.button.MaterialButton>
 

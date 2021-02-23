@@ -1,7 +1,12 @@
-package com.example.workoutparks.objects;
+package com.example.workoutparks.utils;
 
 import androidx.annotation.NonNull;
 
+import com.example.workoutparks.callbacks.CallBack_FirebaseParks;
+import com.example.workoutparks.callbacks.CallBack_FirebaseUser;
+import com.example.workoutparks.callbacks.CallBack_Location;
+import com.example.workoutparks.objects.Park;
+import com.example.workoutparks.objects.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -9,22 +14,30 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MyFirebase {
+public class MyFirebase implements Serializable {
 
     public static final String USERS = "Users";
     public static final String PARKS = "Parks";
 
-    public ArrayList<Park> parks = new ArrayList<>();
     public User currentUser;
+    public ArrayList<Park> parks = new ArrayList<>();
+    private CallBack_FirebaseUser callBack_firebaseUser;
+    private CallBack_FirebaseParks callBack_firebaseParks;
 
-    public MyFirebase() {
-        getParksFromServer();
-        getCurrentUser();
+    public void setCallBack_firebaseUser(CallBack_FirebaseUser callBack_firebaseUser) {
+        this.callBack_firebaseUser = callBack_firebaseUser;
     }
 
-    public void getParksFromServer() {
+    public void setCallBack_FirebaseParks(CallBack_FirebaseParks callBack_firebaseParks) {
+        this.callBack_firebaseParks = callBack_firebaseParks;
+    }
+
+    public MyFirebase() { }
+
+    public void initParksFromServer() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(PARKS);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -34,6 +47,7 @@ public class MyFirebase {
                     Park park = key.getValue(Park.class);
                     parks.add(park);
                 }
+                callBack_firebaseParks.updateParks(parks);
             }
 
             @Override
@@ -42,7 +56,7 @@ public class MyFirebase {
         });
     }
 
-    private void getCurrentUser() {
+    public void initCurrentUser() {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(USERS);
@@ -50,6 +64,7 @@ public class MyFirebase {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
+                callBack_firebaseUser.updateUser(currentUser);
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -63,9 +78,10 @@ public class MyFirebase {
         myRef.child(park.getPid()).setValue(park);
     }
 
-    public void updateUserInDataBase(){
+    public void updateUserInDataBase(User user){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(USERS);
-        myRef.child(currentUser.getUid()).setValue(currentUser);
+        myRef.child(user.getUid()).setValue(user);
+        currentUser = user;
     }
 }

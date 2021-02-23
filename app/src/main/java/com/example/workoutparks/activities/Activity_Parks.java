@@ -3,13 +3,11 @@ package com.example.workoutparks.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
@@ -27,6 +25,7 @@ import com.example.workoutparks.objects.User;
 import com.example.workoutparks.utils.MyLocation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,12 +36,13 @@ import java.util.ArrayList;
 
 public class Activity_Parks extends Activity_Base {
 
+    public static final String USERS = "Users";
     private Fragment_Map fragment_map;
     private MaterialCardView parks_LAY_map;
     private MyLocation myLocation;
     private boolean locationAccepted = true;
     private ArrayList<Park> parks = new ArrayList<>();
-
+    private User currentUser;
     private PopupWindow popupWindow;
 
     private TextView popup_TXT_title;
@@ -51,10 +51,19 @@ public class Activity_Parks extends Activity_Base {
     private RatingBar popup_RTB_rating;
     private TextView popup_TXT_people;
 
+    private ImageButton parks_BTN_home;
+    private ImageButton parks_BTN_parks;
+    private ImageButton parks_BTN_chats;
+    private ImageButton parks_BTN_favorites;
+
     private CallBack_Location callBack_location = new CallBack_Location() {
         @Override
         public void startLocation(double lat, double lon) {
-            fragment_map.showUser(lat, lon);
+            if(fragment_map.showUser(lat, lon)){
+                currentUser.setCurrentLat(lat);
+                currentUser.setCurrentLon(lon);
+                updateUserInDataBase();
+            }
             if(callBack_showParks!= null){
                 callBack_showParks.showPark();
             }
@@ -86,7 +95,7 @@ public class Activity_Parks extends Activity_Base {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parks);
-
+        getCurrentUser();
         findView();
         initView();
         initLocation();
@@ -94,9 +103,12 @@ public class Activity_Parks extends Activity_Base {
         //addParksToServer();
     }
 
-
     private void findView() {
         parks_LAY_map = findViewById(R.id.parks_LAY_map);
+        parks_BTN_home = findViewById(R.id.favorites_BTN_home);
+        parks_BTN_parks = findViewById(R.id.favorites_BTN_parks);
+        parks_BTN_chats = findViewById(R.id.favorites_BTN_chats);
+        parks_BTN_favorites = findViewById(R.id.favorites_BTN_favorites);
     }
 
     private void initView() {
@@ -106,6 +118,29 @@ public class Activity_Parks extends Activity_Base {
                 .commit();
         fragment_map.SetCallBack_ShowParks(callBack_showParks);
         fragment_map.SetCallBack_ParkPopup(callBack_parkPopup);
+
+        parks_BTN_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parks_BTN_home.setImageResource(R.drawable.img_home2);
+                parks_BTN_parks.setImageResource(R.drawable.img_location);
+                Intent myIntent = new Intent(Activity_Parks.this, Activity_Home.class);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+
+        parks_BTN_favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parks_BTN_favorites.setImageResource(R.drawable.img_favorite_2);
+                parks_BTN_parks.setImageResource(R.drawable.img_location);
+                Intent myIntent = new Intent(Activity_Parks.this, Activity_Favorites.class);
+                startActivity(myIntent);
+                finish();
+            }
+        });
+        //TODO: 2. make chats with friends activity
     }
 
     private void initLocation() {
@@ -118,7 +153,6 @@ public class Activity_Parks extends Activity_Base {
         for (Park park : parks) {
             fragment_map.showPark(park);
         }
-
     }
 
     private void addParksToServer() {
@@ -178,11 +212,11 @@ public class Activity_Parks extends Activity_Base {
     }
 
     public void findViewsPopup(PopupWindow popupWindow){
-        popup_TXT_title = popupWindow.getContentView().findViewById(R.id.popup_TXT_title);
-        popup_TXT_distance = popupWindow.getContentView().findViewById(R.id.popup_TXT_distance);
-        popup_BTN_show = popupWindow.getContentView().findViewById(R.id.popup_BTN_show);
-        popup_RTB_rating = popupWindow.getContentView().findViewById(R.id.popup_RTB_rating);
-        popup_TXT_people = popupWindow.getContentView().findViewById(R.id.popup_TXT_people);
+        popup_TXT_title = popupWindow.getContentView().findViewById(R.id.parkfav_TXT_name);
+        popup_TXT_distance = popupWindow.getContentView().findViewById(R.id.parkfav_TXT_distance);
+        popup_BTN_show = popupWindow.getContentView().findViewById(R.id.parkfav_BTN_showpark);
+        popup_RTB_rating = popupWindow.getContentView().findViewById(R.id.park_RTB_rating);
+        popup_TXT_people = popupWindow.getContentView().findViewById(R.id.park_TXT_people);
     }
 
     public void initViewsPopup( PopupWindow popupWindow , String pid){
@@ -198,6 +232,7 @@ public class Activity_Parks extends Activity_Base {
                 Intent myIntent = new Intent(Activity_Parks.this, Activity_ParkInfo.class);
                 myIntent.putExtra(Activity_ParkInfo.PARK, park);
                 startActivity(myIntent);
+                finish();
             }
         });
     }
@@ -209,6 +244,28 @@ public class Activity_Parks extends Activity_Base {
             }
         }
         return null;
+    }
+
+    private void getCurrentUser() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(USERS);
+        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUser = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
+    }
+
+    public void updateUserInDataBase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(USERS);
+        myRef.child(currentUser.getUid()).setValue(currentUser);
     }
 
     @Override
