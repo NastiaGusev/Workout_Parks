@@ -12,14 +12,12 @@ public class Park implements Serializable {
     private double lat = 0.0;
     private double lon = 0.0;
     private String address = "";
-    private int rating = 0;
-    private List<String> users;
+    private ArrayList<String> userLikes = new ArrayList<>();
+    private ArrayList<String> users= new ArrayList<>();
 
-    public Park() {
-        users = new ArrayList<>();
-    }
+    public Park() { }
 
-    public void setUsers(List<String> users) {
+    public void setUsers(ArrayList<String> users) {
         this.users = users;
     }
 
@@ -30,10 +28,8 @@ public class Park implements Serializable {
     }
 
     public void removeUser(String newUid){
-        for (String uid: users) {
-            if(uid.equals(newUid)){
-                users.remove(uid);
-            }
+        if (checkIfUserIsInPark(newUid)) {
+            users.remove(newUid);
         }
     }
 
@@ -47,6 +43,30 @@ public class Park implements Serializable {
             }
         }
         return false;
+    }
+
+    public boolean checkIfUserLikedPark(String newUid){
+        if(userLikes.isEmpty()){
+            return false;
+        }
+        for (String uid: userLikes) {
+            if(uid.equals(newUid)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addLike(String uid){
+        if (!checkIfUserLikedPark(uid)) {
+            userLikes.add(uid);
+        }
+    }
+
+    public void removeLike(String uid){
+        if (checkIfUserLikedPark(uid)) {
+            userLikes.remove(uid);
+        }
     }
 
     public Park setPid(String pid) {
@@ -69,6 +89,16 @@ public class Park implements Serializable {
         return this;
     }
 
+    public Park setAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public Park setUserLikes(ArrayList<String> userLikes) {
+        this.userLikes = userLikes;
+        return this;
+    }
+
     public String getPid() {
         return pid;
     }
@@ -87,5 +117,13 @@ public class Park implements Serializable {
 
     public List<String> getUsers() {
         return users;
+    }
+
+    public ArrayList<String> getUserLikes() {
+        return userLikes;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }

@@ -28,11 +28,12 @@
             android:layout_width="58dp"
             android:layout_height="58dp"
             android:src="@drawable/img_user"
+            android:scaleType="centerCrop"
             app:shapeAppearanceOverlay="@style/CircleImageView">
         </com.google.android.material.imageview.ShapeableImageView>
 
         <TextView
-            android:id="@+id/park_LBL_parkname"
+            android:id="@+id/user_LBL_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/user_IMG_userimage"
@@ -45,29 +46,17 @@
         </TextView>
 
         <TextView
-            android:id="@+id/park_LBL_distance"
+            android:id="@+id/user_LBL_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_below="@id/park_LBL_parkname"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/user_LBL_username"
             android:layout_toEndOf="@+id/user_IMG_userimage"
-            android:layout_alignStart="@id/park_LBL_parkname"
+            android:layout_alignStart="@id/user_LBL_username"
             android:textStyle="bold"
             android:textSize="14sp"
             android:text="Personal trainor">
         </TextView>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/user_BTN_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="more"
-            android:textColor="@color/turquoise"
-            app:rippleColor="@color/turquoise"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:textSize="12sp">
-        </com.google.android.material.button.MaterialButton>
 
     </RelativeLayout>
 

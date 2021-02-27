@@ -73,13 +73,12 @@ public class Fragment_Map extends Fragment {
 
     public boolean showUser(double lat, double lon) {
         MarkerOptions newPosition = new MarkerOptions().position(new LatLng(lat, lon));
-        if (getDistance(newPosition.getPosition().latitude, newPosition.getPosition().longitude) > 400| userMarker == null) {
-            Log.d("TAG", "users distance: " + getDistance(newPosition.getPosition().latitude, newPosition.getPosition().longitude) );
+        if (getDistance(newPosition.getPosition().latitude, newPosition.getPosition().longitude) > 400 || userMarker == null) {
             if (userMarker != null) {
                 userMarker.remove();
-                userMarker = gMap.addMarker(newPosition);
+                userMarker = gMap.addMarker(newPosition.title("You are here"));
             } else {
-                userMarker = gMap.addMarker(newPosition);
+                userMarker = gMap.addMarker(newPosition.title("You are here"));
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userMarker.getPosition(), 15f));
             }
             return true;

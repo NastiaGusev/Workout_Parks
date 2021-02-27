@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Activity_UserProfile"
+    android:background="@color/light_grey3"
+    >
+
+    <ImageButton
+        android:id="@+id/profile_BTN_back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/img_back"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:scaleType="centerCrop"
+        android:layout_margin="10dp"
+        >
+    </ImageButton>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_IMG_user"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/img_user"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="15dp"
+        app:shapeAppearanceOverlay="@style/CircleImageView"
+        >
+    </com.google.android.material.imageview.ShapeableImageView>
+
+    <TextView
+        android:id="@+id/profile_TXT_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/profile_IMG_user"
+        android:layout_marginTop="5dp"
+        android:text="User User"
+        android:textStyle="bold"
+        android:textSize="30sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/profile_TXT_ageGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/profile_TXT_title"
+        android:layout_marginTop="6dp"
+        android:text=""
+        android:textSize="14sp"
+        android:textStyle="italic">
+    </TextView>
+
+    <TextView
+        android:id="@+id/profile_TXT_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/profile_TXT_ageGender"
+        android:layout_marginTop="5dp"
+        android:text=""
+        android:textSize="14sp"
+        android:textStyle="italic">
+    </TextView>
+
+    <TextView
+        android:id="@+id/profile_TXT_parkTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+         android:layout_below="@+id/profile_TXT_description"
+        android:layout_centerHorizontal="true"
+        android:text="Favorite parks:"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp">
+
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/profile_LST_parksList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey3"
+        android:layout_below="@+id/profile_TXT_parkTitle"
+        android:layout_above="@+id/profile_LAY_menu"
+        tools:listitem= "@layout/list_park">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/profile_LAY_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        >
+        <FrameLayout
+            android:id="@+id/profile_LAY_bottomButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

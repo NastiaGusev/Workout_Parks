@@ -1,9 +1,10 @@
 package com.example.workoutparks.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -18,15 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workoutparks.R;
 import com.example.workoutparks.adapters.Adapter_User;
+import com.example.workoutparks.callbacks.CallBack_Favorites;
+import com.example.workoutparks.callbacks.CallBack_Home;
+import com.example.workoutparks.callbacks.CallBack_MyProfile;
+import com.example.workoutparks.callbacks.CallBack_Parks;
+import com.example.workoutparks.fragments.Fragment_bottomButtons;
 import com.example.workoutparks.objects.Distance;
 import com.example.workoutparks.objects.Park;
 import com.example.workoutparks.objects.User;
+import com.example.workoutparks.utils.MyDataBase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import java.util.ArrayList;
 
@@ -38,8 +46,9 @@ public class Activity_ParkInfo extends Activity_Base {
     private User currentUser;
     private Park thisPark;
     private ArrayList<Park> parks = new ArrayList<>();
-    private ArrayList<User> users = new ArrayList<>();
-    private Distance distance;
+    private ArrayList<User> usersInPark = new ArrayList<>();
+    private Distance distance  = new Distance();
+    private MyDataBase myDatabase = new MyDataBase();
 
     private RecyclerView parkInfo_LST_userList;
     private Adapter_User adapter_user;
@@ -48,97 +57,125 @@ public class Activity_ParkInfo extends Activity_Base {
     private ImageButton parkInfo_BTN_addToFav;
     private TextView parkInfo_TXT_parkTitle;
     private TextView parkInfo_TXT_parkAddress;
-    private RatingBar parkInfo_RTB_rating;
     private CardView parkInfo_BTN_checkIn;
     private TextView parkInfo_TXT_checkIn;
     private ImageView parkInfo_IMG_placeholder;
+    private ImageButton parkInfo_BTN_likes;
+    private ImageButton parkInfo_BTN_navigate;
+    private TextView parkInfo_TXT_likes;
+    private TextView parkInfo_TXT_people;
 
-    private ImageButton parkInfo_BTN_home;
-    private ImageButton parkInfo_BTN_parks;
-    private ImageButton parkInfo_BTN_chats;
-    private ImageButton parkInfo_BTN_favorites;
+    private FrameLayout parkInfo_LAY_bottomButtons;
+    private Fragment_bottomButtons fragment_buttons;
+
+    private CallBack_Home callBack_home = new CallBack_Home() {
+        @Override
+        public void gotoHome() {
+            Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_Home.class);
+            startActivity(myIntent);
+            finish();
+        }
+    };
+
+    private CallBack_MyProfile callBack_myProfile = new CallBack_MyProfile() {
+        @Override
+        public void gotoMyProfile() {
+            Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_UserProfile.class);
+            myIntent.putExtra(Activity_UserProfile.USER, currentUser);
+            startActivity(myIntent);
+            finish();
+        }
+    };
+
+    private CallBack_Parks callBack_parks = new CallBack_Parks() {
+        @Override
+        public void gotoParks() {
+            Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_Parks.class);
+            startActivity(myIntent);
+            finish();
+        }
+    };
+
+    private CallBack_Favorites callBack_favorites = new CallBack_Favorites() {
+        @Override
+        public void gotoFavorites() {
+            Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_Favorites.class);
+            startActivity(myIntent);
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park_info);
         thisPark = (Park) getIntent().getSerializableExtra(PARK);
-        distance = new Distance();
-        parkInfo_LST_userList = findViewById(R.id.parkInfo_LST_userList);
+        initBottomFragment();
         findViews();
-        getParksFromServer();
-        getCurrentUser();
         initViews();
-
+        getParksFromDatabase();
+        getCurrentUser();
     }
 
-    private void getUsersFromPark() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(USERS);
-        if (parkInfo_LST_userList.getAdapter() == null) {
-            initListAdapter();
-        }
+    private void initBottomFragment() {
+        parkInfo_LAY_bottomButtons = findViewById(R.id.parkInfo_LAY_bottomButtons);
+        fragment_buttons = new Fragment_bottomButtons();
+        fragment_buttons.setCallBack_Home(callBack_home);
+        fragment_buttons.setCallBack_Parks(callBack_parks);
+        fragment_buttons.setCallBack_myProfile(callBack_myProfile);
+        fragment_buttons.setCallBack_favorites(callBack_favorites);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.parkInfo_LAY_bottomButtons, fragment_buttons)
+                .commit();
+    }
 
-        myRef.addValueEventListener(new ValueEventListener() {
+    private void findViews() {
+        parkInfo_LST_userList = findViewById(R.id.parkInfo_LST_userList);
+        parkInfo_IBTN_chat = findViewById(R.id.parkInfo_IBTN_chat);
+        parkInfo_BTN_addToFav = findViewById(R.id.parkInfo_BTN_addToFav);
+        parkInfo_TXT_parkTitle = findViewById(R.id.parkInfo_TXT_parkTitle);
+        parkInfo_TXT_parkAddress = findViewById(R.id.parkInfo_TXT_parkAddress);
+        parkInfo_BTN_checkIn = findViewById(R.id.parkInfo_BTN_checkIn);
+        parkInfo_TXT_checkIn = findViewById(R.id.parkInfo_TXT_checkIn);
+        parkInfo_IMG_placeholder = findViewById(R.id.parkInfo_IMG_placeholder);
+        parkInfo_BTN_likes =findViewById(R.id.parkInfo_BTN_likes);
+        parkInfo_TXT_likes = findViewById(R.id.parkInfo_TXT_likes);
+        parkInfo_TXT_people = findViewById(R.id.parkInfo_TXT_people);
+        parkInfo_BTN_navigate = findViewById(R.id.parkInfo_BTN_navigate);
+    }
+
+    private void initViews() {
+        parkInfo_TXT_parkTitle.setText(thisPark.getName());
+        parkInfo_TXT_parkAddress.setText(thisPark.getAddress());
+        parkInfo_TXT_likes.setText("" + thisPark.getUserLikes().size());
+        parkInfo_TXT_people.setText("" );
+
+        parkInfo_BTN_navigate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot key : snapshot.getChildren()) {
-                    User user = key.getValue(User.class);
-                    if (user.getCurrentPark().equals(thisPark.getPid()) && checkIfUserInPark(user) < 0) {
-                        updateListUser(user);
-                    } else if (!user.getCurrentPark().equals(thisPark.getPid()) && checkIfUserInPark(user) >= 0) {
-                        removeUserFromList(user);
-                    }
-                }
+            public void onClick(View v) {
+                navigateToPark();
             }
+        });
 
+        parkInfo_IBTN_chat.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onClick(View v) {
+                Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_GroupChat.class);
+                myIntent.putExtra(Activity_ParkInfo.PARK, thisPark);
+                startActivity(myIntent);
             }
         });
     }
 
-    public int checkIfUserInPark(User checkUser) {
-        for (User user : users) {
-            if (user.getUid().equals(checkUser.getUid())) {
-                return users.indexOf(user);
-            }
-        }
-        return -1;
+    private void navigateToPark() {
+        Uri gmIntentUri = Uri.parse("google.navigation:q=" + thisPark.getLat() + "," + thisPark.getLon() + "&mode=w");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 
-    private void updateListUser(User user) {
-        if (user.getUid().equals(currentUser.getUid())) {
-            users.add(0, user);
-            adapter_user.notifyItemChanged(0);
-        } else {
-            users.add(user);
-            adapter_user.notifyItemChanged(users.size());
-        }
-    }
-
-    private void removeUserFromList(User user) {
-        int position = checkIfUserInPark(user);
-        Log.d("TAG", "removeUserFromList: " + position);
-        users.remove(position);
-        parkInfo_LST_userList.removeViewAt(position);
-        adapter_user.notifyItemRemoved(position);
-        adapter_user.notifyItemRangeChanged(position, users.size());
-    }
-
-    private void initListAdapter() {
-        parkInfo_LST_userList.setLayoutManager(new LinearLayoutManager(this));
-        adapter_user = new Adapter_User(this, users);
-        adapter_user.setClickListener(new Adapter_User.ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(Activity_ParkInfo.this, "Position" + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        parkInfo_LST_userList.setAdapter(adapter_user);
-    }
-
-    public void getParksFromServer() {
+    //Get all the parks from database
+    public void getParksFromDatabase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(PARKS);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,8 +201,9 @@ public class Activity_ParkInfo extends Activity_Base {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                getUsersFromPark();
+                initLikes();
                 initFavPark();
+                getUsersFromPark();
                 initCheckIn();
             }
 
@@ -175,61 +213,100 @@ public class Activity_ParkInfo extends Activity_Base {
         });
     }
 
-    private void findViews() {
+    private void getUsersFromPark() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(USERS);
+        if (parkInfo_LST_userList.getAdapter() == null) {
+            initListAdapter();
+        }
+        //Listener for changes in users - if users entered/exited the park
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot key : snapshot.getChildren()) {
+                    User user = key.getValue(User.class);
+                    if (user.getCurrentPark().equals(thisPark.getPid()) && checkIfUserInPark(user) < 0) {
+                        addUserToList(user);
+                    } else if (!user.getCurrentPark().equals(thisPark.getPid()) && checkIfUserInPark(user) >= 0) {
+                        removeUserFromList(user);
+                    }
+                }
+                parkInfo_TXT_people.setText("" + usersInPark.size());
+            }
 
-        parkInfo_IBTN_chat = findViewById(R.id.parkInfo_IBTN_chat);
-        parkInfo_BTN_addToFav = findViewById(R.id.parkInfo_BTN_addToFav);
-        parkInfo_TXT_parkTitle = findViewById(R.id.parkInfo_TXT_parkTitle);
-        parkInfo_TXT_parkAddress = findViewById(R.id.parkInfo_TXT_parkAddress);
-        parkInfo_BTN_checkIn = findViewById(R.id.parkInfo_BTN_checkIn);
-        parkInfo_TXT_checkIn = findViewById(R.id.parkInfo_TXT_checkIn);
-        parkInfo_IMG_placeholder = findViewById(R.id.parkInfo_IMG_placeholder);
-        parkInfo_RTB_rating = findViewById(R.id.parkInfo_RTB_rating);
-
-        parkInfo_BTN_home = findViewById(R.id.favorites_BTN_home);
-        parkInfo_BTN_parks = findViewById(R.id.favorites_BTN_parks);
-        parkInfo_BTN_chats = findViewById(R.id.favorites_BTN_chats);
-        parkInfo_BTN_favorites = findViewById(R.id.favorites_BTN_favorites);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
-    private void initViews() {
-        parkInfo_TXT_parkTitle.setText(thisPark.getName());
-        parkInfo_IBTN_chat.setOnClickListener(new View.OnClickListener() {
+    public int checkIfUserInPark(User checkUser) {
+        for (User user : usersInPark) {
+            if (user.getUid().equals(checkUser.getUid())) {
+                return usersInPark.indexOf(user);
+            }
+        }
+        return -1;
+    }
+
+    private void addUserToList(User user) {
+        if (user.getUid().equals(currentUser.getUid())) {
+            usersInPark.add(0, user);
+            adapter_user.notifyItemChanged(0);
+        } else {
+            usersInPark.add(user);
+            adapter_user.notifyItemChanged(usersInPark.size());
+        }
+        adapter_user.notifyItemRangeChanged(0, usersInPark.size());
+        parkInfo_TXT_people.setText("" + usersInPark.size());
+    }
+
+    private void removeUserFromList(User user) {
+        int position = checkIfUserInPark(user);
+        usersInPark.remove(position);
+        adapter_user.notifyItemRemoved(position);
+        adapter_user.notifyItemRangeChanged(position, usersInPark.size());
+        parkInfo_TXT_people.setText("" + usersInPark.size());
+    }
+
+    private void initListAdapter() {
+        parkInfo_LST_userList.setLayoutManager(new LinearLayoutManager(this));
+        adapter_user = new Adapter_User(this, usersInPark);
+        adapter_user.setClickListener(new Adapter_User.ItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_GroupChat.class);
-                myIntent.putExtra(Activity_ParkInfo.PARK, thisPark);
-                startActivity(myIntent);
+            public void onItemClick(View view, int position) {
+                //Go to profile of the user (can't go to current user's profile)
+                if(!usersInPark.get(position).getUid().equals(currentUser.getUid())){
+                    Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_UserProfile.class);
+                    myIntent.putExtra(Activity_UserProfile.USER, usersInPark.get(position));
+                    myIntent.putExtra(Activity_UserProfile.CURRENT_USER, currentUser);
+                    myIntent.putExtra(Activity_UserProfile.CURRENT_PARK, thisPark);
+                    startActivity(myIntent);
+                    finish();
+                }
             }
         });
+        parkInfo_LST_userList.setAdapter(adapter_user);
+    }
 
-        parkInfo_BTN_home.setOnClickListener(new View.OnClickListener() {
+
+
+    private void initLikes() {
+        if(thisPark.checkIfUserLikedPark(currentUser.getUid())){
+            parkInfo_BTN_likes.setImageResource(R.drawable.img_like);
+        }
+        parkInfo_BTN_likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                parkInfo_BTN_home.setImageResource(R.drawable.img_home2);
-                Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_Home.class);
-                startActivity(myIntent);
-                finish();
-            }
-        });
-
-        parkInfo_BTN_parks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parkInfo_BTN_parks.setImageResource(R.drawable.img_location2);
-                Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_Parks.class);
-                startActivity(myIntent);
-                finish();
-            }
-        });
-
-        parkInfo_BTN_favorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parkInfo_BTN_favorites.setImageResource(R.drawable.img_favorite_2);
-                Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_Favorites.class);
-                startActivity(myIntent);
-                finish();
+                if(thisPark.checkIfUserLikedPark(currentUser.getUid())){
+                    parkInfo_BTN_likes.setImageResource(R.drawable.img_emptylike);
+                    thisPark.removeLike(currentUser.getUid());
+                }else {
+                    parkInfo_BTN_likes.setImageResource(R.drawable.img_like);
+                    thisPark.addLike(currentUser.getUid());
+                }
+                myDatabase.updateParkInDataBase(thisPark);
+                parkInfo_TXT_likes.setText(""+ thisPark.getUserLikes().size());
             }
         });
     }
@@ -242,17 +319,21 @@ public class Activity_ParkInfo extends Activity_Base {
             @Override
             public void onClick(View v) {
                 if (distance.getDistance(currentUser.getCurrentLat(), currentUser.getCurrentLon(), thisPark.getLat(), thisPark.getLon()) > 500) {
+                    //User is too far away to check in park
                     Toast.makeText(Activity_ParkInfo.this, "You are too far away!", Toast.LENGTH_SHORT).show();
                 } else {
                     if (!currentUser.checkIfInPark()) {
+                        //The user is not in any park
                         thisPark.addUser(currentUser.getUid());
                         currentUser.setCurrentPark(thisPark.getPid());
                         changeCheckOut();
                     } else if (currentUser.getCurrentPark().equals(thisPark.getPid())) {
+                        //If user is already in park- check him out
                         currentUser.checkOutOfPark();
                         thisPark.removeUser(currentUser.getUid());
                         changeCheckIn();
                     } else {
+                        //The user checked in other park
                         String pid = currentUser.getCurrentPark();
                         for (Park park : parks) {
                             if (pid.equals(park.getPid())) {
@@ -260,8 +341,8 @@ public class Activity_ParkInfo extends Activity_Base {
                             }
                         }
                     }
-                    updateParkInDataBase();
-                    updateUserInDataBase();
+                    myDatabase.updateParkInDataBase(thisPark);
+                    myDatabase.updateUserInDataBase(currentUser);
                 }
             }
         });
@@ -269,30 +350,25 @@ public class Activity_ParkInfo extends Activity_Base {
 
     public void initFavPark() {
         if (currentUser.checkIfParkInFav(thisPark.getPid())) {
-            parkInfo_BTN_addToFav.setImageResource(R.drawable.img_like);
-        } else {
-            parkInfo_BTN_addToFav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    parkInfo_BTN_addToFav.setImageResource(R.drawable.img_like);
-                    currentUser.addPark(thisPark.getPid());
-                    updateUserInDataBase();
+            parkInfo_BTN_addToFav.setImageResource(R.drawable.img_star);
+        }
+        parkInfo_BTN_addToFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser.checkIfParkInFav(thisPark.getPid())) {
+                    parkInfo_BTN_addToFav.setImageResource(R.drawable.img_starempty);
+                    currentUser.removeFavPark(thisPark.getPid());
+                    myDatabase.updateUserInDataBase(currentUser);
+                    Toast.makeText(Activity_ParkInfo.this, "Park removed from favorites", Toast.LENGTH_SHORT).show();
+                } else {
+                    parkInfo_BTN_addToFav.setImageResource(R.drawable.img_star);
+                    currentUser.addFavPark(thisPark.getPid());
+                    myDatabase.updateUserInDataBase(currentUser);
                     Toast.makeText(Activity_ParkInfo.this, "Park added to favorites!", Toast.LENGTH_SHORT).show();
                 }
-            });
-        }
-    }
+            }
+        });
 
-    public void updateParkInDataBase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(PARKS);
-        myRef.child(thisPark.getPid()).setValue(thisPark);
-    }
-
-    public void updateUserInDataBase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(USERS);
-        myRef.child(currentUser.getUid()).setValue(currentUser);
     }
 
     public void changeCheckIn() {
@@ -300,7 +376,6 @@ public class Activity_ParkInfo extends Activity_Base {
         parkInfo_TXT_checkIn.setTextColor(ContextCompat.getColor(Activity_ParkInfo.this, R.color.red));
         parkInfo_TXT_checkIn.setText("Check in");
         parkInfo_IMG_placeholder.setImageResource(R.drawable.img_placeholder);
-        Toast.makeText(Activity_ParkInfo.this, "Rating is: " + parkInfo_RTB_rating.getRating(), Toast.LENGTH_SHORT).show();
     }
 
     public void changeCheckOut() {

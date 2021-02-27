@@ -24,5 +24,8 @@
     <color name="red">#FF6565</color>
 
     <color name="turquoise">#79BCA0</color>
+    <color name="turquoiselight">#93C1AE</color>
+
+    <color name="purple">#8795de</color>
 
 </resources>

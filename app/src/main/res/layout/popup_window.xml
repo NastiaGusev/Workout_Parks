@@ -37,19 +37,30 @@
             android:textSize="13sp"
              />
 
-        <RatingBar
-            android:id="@+id/park_RTB_rating"
+       <ImageButton
+           android:id="@+id/parks_BTN_likes"
+           android:layout_width="25dp"
+           android:layout_height="25dp"
+           android:src="@drawable/img_emptylike"
+           android:layout_below="@+id/parkfav_TXT_distance"
+           android:layout_alignStart="@+id/parkfav_TXT_distance"
+           android:layout_marginTop="10dp"
+           android:background="@android:color/transparent"
+           android:clickable="true"
+           android:scaleType="centerCrop">
+       </ImageButton>
+
+        <TextView
+            android:id="@+id/parks_TXT_likes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/parkfav_TXT_distance"
-            android:layout_alignStart="@+id/parkfav_TXT_name"
-            android:layout_marginBottom="10dp"
-            android:stepSize="0.5"
-            android:numStars="5"
-            style ="@style/Widget.AppCompat.RatingBar.Indicator"
-            android:progressTint="@color/yellow"
-            android:secondaryProgressTint="@color/yellow"
-            />
+            android:text=" 0"
+            android:layout_toEndOf="@+id/parks_BTN_likes"
+            android:layout_alignTop="@+id/parks_BTN_likes"
+            android:layout_alignBottom="@+id/parks_BTN_likes"
+            android:gravity="center"
+            android:layout_marginStart="6dp">
+        </TextView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/parkfav_BTN_showpark"

@@ -17,7 +17,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkoutParks">
-        <activity android:name=".activities.Activity_Favorites"></activity>
+        <activity android:name=".activities.Activity_UserProfile"></activity>
+        <activity android:name=".activities.Activity_UpdateProfile" />
+        <activity android:name=".activities.Activity_Favorites" />
         <activity
             android:name=".activities.Activity_GroupChat"
             android:windowSoftInputMode="adjustPan" />

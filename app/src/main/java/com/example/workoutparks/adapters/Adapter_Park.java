@@ -16,29 +16,30 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
-public class Adapter_ParkFav extends RecyclerView.Adapter<Adapter_ParkFav.ViewHolder>{
+public class Adapter_Park extends RecyclerView.Adapter<Adapter_Park.ViewHolder>{
+
     private ArrayList<Park> mData;
     private LayoutInflater mInflater;
-    private Adapter_ParkFav.ItemClickListener mClickListener;
+    private Adapter_Park.ItemClickListener mClickListener;
     private Distance distance = new Distance();
 
-    public Adapter_ParkFav(Context context, ArrayList<Park> data) {
+    public Adapter_Park(Context context, ArrayList<Park> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
 
     // inflates the row layout from xml when needed
     @Override
-    public Adapter_ParkFav.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.list_parkfav, parent, false);
-        return new Adapter_ParkFav.ViewHolder(view);
+    public Adapter_Park.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.list_park, parent, false);
+        return new Adapter_Park.ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(Adapter_ParkFav.ViewHolder holder, int position) {
+    public void onBindViewHolder(Adapter_Park.ViewHolder holder, int position) {
         Park park = mData.get(position);
-        holder.parkfav_TXT_name.setText(park.getName());
+        holder.park_TXT_name.setText(park.getName());
     }
 
     // total number of rows
@@ -53,41 +54,29 @@ public class Adapter_ParkFav extends RecyclerView.Adapter<Adapter_ParkFav.ViewHo
     }
 
     // allows clicks events to be caught
-    public void setClickListener(Adapter_ParkFav.ItemClickListener itemClickListener) {
+    public void setClickListener(Adapter_Park.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onMoreClick(int position);
-        void onFavClick(int position);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView parkfav_TXT_name;
-        ImageButton parkfav_BTN_addToFav;
-        MaterialButton parkfav_BTN_showpark;
+        TextView park_TXT_name;
+        MaterialButton park_BTN_showpark;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            parkfav_BTN_addToFav = itemView.findViewById(R.id.parkfav_BTN_addToFav);
-            parkfav_TXT_name = itemView.findViewById(R.id.parkfav_TXT_name);
-            parkfav_BTN_showpark = itemView.findViewById(R.id.parkfav_BTN_showpark);
+            park_TXT_name = itemView.findViewById(R.id.park_TXT_name);
+            park_BTN_showpark = itemView.findViewById(R.id.park_BTN_showpark);
 
-            parkfav_BTN_showpark.setOnClickListener(new View.OnClickListener() {
+            park_BTN_showpark.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mClickListener != null) {
                         mClickListener.onMoreClick(getAdapterPosition());
-                    }
-                }
-            });
-
-            parkfav_BTN_addToFav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mClickListener != null) {
-                        mClickListener.onFavClick(getAdapterPosition());
                     }
                 }
             });
@@ -98,4 +87,3 @@ public class Adapter_ParkFav extends RecyclerView.Adapter<Adapter_ParkFav.ViewHo
     }
 
 }
-

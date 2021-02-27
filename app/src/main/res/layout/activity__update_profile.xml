@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Activity_UpdateProfile">
+
+    <TextView
+        android:id="@+id/updateProfile_TXT_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Update profile"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/updateProfile_IMG_user"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_below="@+id/updateProfile_TXT_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_user"
+        app:shapeAppearanceOverlay="@style/CircleImageView">
+
+    </com.google.android.material.imageview.ShapeableImageView>
+
+    <ImageButton
+        android:id="@+id/updateProfile_BTN_choose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/updateProfile_IMG_user"
+        android:layout_toEndOf="@+id/updateProfile_IMG_user"
+        android:background="@android:color/transparent"
+        android:src="@drawable/img_camera">
+
+    </ImageButton>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/updateProfile_EDT_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/updateProfile_IMG_user"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:hint="Name:"
+        app:boxStrokeColor="@color/turquoise"
+        app:counterTextColor="@color/turquoise"
+        app:hintTextColor="@color/turquoise"
+        app:placeholderTextColor="@color/turquoise">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/light_grey2"
+            android:textCursorDrawable="@color/black">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/updateProfile_EDT_des"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/updateProfile_EDT_name"
+        android:layout_alignEnd="@+id/updateProfile_EDT_name"
+        android:layout_alignStart="@+id/updateProfile_EDT_name"
+        android:layout_marginTop="10dp"
+        android:hint="About me:"
+        app:boxStrokeColor="@color/turquoise"
+        app:counterTextColor="@color/turquoise"
+        app:hintTextColor="@color/turquoise"
+        app:placeholderTextColor="@color/turquoise">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:textColor="@color/grey"
+            android:textColorHint="@color/light_grey2"
+            android:textCursorDrawable="@color/black"
+            android:maxLength="30">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/updateProfile_LAY_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/updateProfile_EDT_name"
+        android:layout_alignEnd="@+id/updateProfile_EDT_name"
+        android:layout_below="@+id/updateProfile_EDT_des"
+        android:outlineSpotShadowColor="@color/black"
+        android:outlineAmbientShadowColor="@color/grey"
+        android:layout_marginTop="10dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/updateProfile_TXT_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:gravity="center"
+                android:text="Age:"
+                android:textSize="12sp">
+
+            </TextView>
+
+            <com.google.android.material.slider.Slider
+                android:id="@+id/updateProfile_SLD_slider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/updateProfile_TXT_age"
+                android:layout_centerVertical="true"
+                android:stepSize="1.0"
+                android:valueFrom="0.0"
+                android:valueTo="100.0"
+                app:haloColor="@color/turquoise"
+                app:thumbColor="@color/turquoise"
+                app:thumbStrokeColor="@color/turquoise"
+                app:tickColorActive="@color/turquoiselight"
+                app:tickColorInactive="@color/light_grey"
+                app:trackColorActive="@color/turquoiselight"
+                app:trackColorInactive="@color/light_grey">
+
+            </com.google.android.material.slider.Slider>
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/updateProfile_BTN_gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/updateProfile_LAY_age"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:selectionRequired="true"
+        app:singleSelection="true"
+        >
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/updateProfile_BTN_male"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:insetBottom="0dp"
+            android:text="MALE"
+            android:textColor="@color/turquoise"
+            app:rippleColor="@color/turquoise"
+            app:strokeColor="@color/turquoiselight"
+            >
+        </com.google.android.material.button.MaterialButton>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/updateProfile_BTN_female"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:insetTop="0dp"
+            android:shadowColor="@color/turquoiselight"
+            android:text="FEMALE"
+            android:textColor="@color/turquoise"
+            app:rippleColor="@color/turquoise"
+            app:strokeColor="@color/turquoiselight"
+            >
+        </com.google.android.material.button.MaterialButton>
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <ProgressBar
+        android:id="@+id/updateProfile_BAR_progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/updateProfile_BTN_upload"
+        android:layout_alignParentStart="true"
+        android:layout_margin="10dp"
+        >
+    </ProgressBar>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/updateProfile_BTN_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/updateProfile_LAY_menu"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:text="upload"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:backgroundTint="@color/turquoise"
+        app:icon="@drawable/img_upload"
+        app:rippleColor="@color/white">
+    </com.google.android.material.button.MaterialButton>
+
+    <RelativeLayout
+        android:id="@+id/updateProfile_LAY_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        >
+        <FrameLayout
+            android:id="@+id/updateProfile_LAY_bottomButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+        </FrameLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

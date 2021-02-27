@@ -3,11 +3,14 @@ package com.example.workoutparks.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RatingBar;
@@ -15,13 +18,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.workoutparks.callbacks.CallBack_Favorites;
+import com.example.workoutparks.callbacks.CallBack_Home;
+import com.example.workoutparks.callbacks.CallBack_MyProfile;
 import com.example.workoutparks.callbacks.CallBack_ParkPopup;
 import com.example.workoutparks.callbacks.CallBack_ShowParks;
 import com.example.workoutparks.fragments.Fragment_Map;
 import com.example.workoutparks.R;
 import com.example.workoutparks.callbacks.CallBack_Location;
+import com.example.workoutparks.fragments.Fragment_bottomButtons;
 import com.example.workoutparks.objects.Park;
 import com.example.workoutparks.objects.User;
+import com.example.workoutparks.utils.MyDataBase;
 import com.example.workoutparks.utils.MyLocation;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -44,25 +52,25 @@ public class Activity_Parks extends Activity_Base {
     private ArrayList<Park> parks = new ArrayList<>();
     private User currentUser;
     private PopupWindow popupWindow;
+    private MyDataBase myDataBase = new MyDataBase();
 
     private TextView popup_TXT_title;
     private TextView popup_TXT_distance;
     private MaterialButton popup_BTN_show;
-    private RatingBar popup_RTB_rating;
     private TextView popup_TXT_people;
+    private TextView parks_TXT_likes;
+    private ImageButton parks_BTN_likes;
 
-    private ImageButton parks_BTN_home;
-    private ImageButton parks_BTN_parks;
-    private ImageButton parks_BTN_chats;
-    private ImageButton parks_BTN_favorites;
+    private FrameLayout parks_LAY_bottomButtons;
+    private Fragment_bottomButtons fragment_buttons;
 
     private CallBack_Location callBack_location = new CallBack_Location() {
         @Override
         public void startLocation(double lat, double lon) {
-            if(fragment_map.showUser(lat, lon)){
+            if(fragment_map.showUser(lat, lon) && currentUser!=null){
                 currentUser.setCurrentLat(lat);
                 currentUser.setCurrentLon(lon);
-                updateUserInDataBase();
+                myDataBase.updateUserInDataBase(currentUser);
             }
             if(callBack_showParks!= null){
                 callBack_showParks.showPark();
@@ -84,34 +92,86 @@ public class Activity_Parks extends Activity_Base {
         }
     };
 
+    private CallBack_Home callBack_home = new CallBack_Home() {
+        @Override
+        public void gotoHome() {
+            Intent myIntent = new Intent(Activity_Parks.this, Activity_Home.class);
+            startActivity(myIntent);
+            finish();
+        }
+    };
+
+    private CallBack_MyProfile callBack_myProfile = new CallBack_MyProfile() {
+        @Override
+        public void gotoMyProfile() {
+            Intent myIntent = new Intent(Activity_Parks.this, Activity_UserProfile.class);
+            myIntent.putExtra(Activity_UserProfile.USER, currentUser);
+            startActivity(myIntent);
+            finish();
+        }
+    };
+
+    private CallBack_Favorites callBack_favorites = new CallBack_Favorites() {
+        @Override
+        public void gotoFavorites() {
+            Intent myIntent = new Intent(Activity_Parks.this, Activity_Favorites.class);
+            startActivity(myIntent);
+            finish();
+        }
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
         fragment_map.SetCallBack_ShowParks(callBack_showParks);
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parks);
+        //addParksToServer();
         getCurrentUser();
         findView();
-        initView();
+        initBottomFragment();
+        initMapFragment();
         initLocation();
         getParksFromServer();
-        //addParksToServer();
+
+    }
+
+    private void getCurrentUser() {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(USERS);
+        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentUser = dataSnapshot.getValue(User.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 
     private void findView() {
         parks_LAY_map = findViewById(R.id.parks_LAY_map);
-        parks_BTN_home = findViewById(R.id.favorites_BTN_home);
-        parks_BTN_parks = findViewById(R.id.favorites_BTN_parks);
-        parks_BTN_chats = findViewById(R.id.favorites_BTN_chats);
-        parks_BTN_favorites = findViewById(R.id.favorites_BTN_favorites);
+        parks_LAY_bottomButtons = findViewById(R.id.parks_LAY_bottomButtons);
     }
 
-    private void initView() {
+    private void initBottomFragment() {
+        fragment_buttons = new Fragment_bottomButtons();
+        fragment_buttons.setCallBack_Home(callBack_home);
+        fragment_buttons.setCallBack_myProfile(callBack_myProfile);
+        fragment_buttons.setCallBack_favorites(callBack_favorites);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.parks_LAY_bottomButtons, fragment_buttons)
+                .commit();
+    }
+
+    private void initMapFragment() {
         fragment_map = new Fragment_Map();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.parks_LAY_map, fragment_map)
@@ -119,28 +179,6 @@ public class Activity_Parks extends Activity_Base {
         fragment_map.SetCallBack_ShowParks(callBack_showParks);
         fragment_map.SetCallBack_ParkPopup(callBack_parkPopup);
 
-        parks_BTN_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parks_BTN_home.setImageResource(R.drawable.img_home2);
-                parks_BTN_parks.setImageResource(R.drawable.img_location);
-                Intent myIntent = new Intent(Activity_Parks.this, Activity_Home.class);
-                startActivity(myIntent);
-                finish();
-            }
-        });
-
-        parks_BTN_favorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                parks_BTN_favorites.setImageResource(R.drawable.img_favorite_2);
-                parks_BTN_parks.setImageResource(R.drawable.img_location);
-                Intent myIntent = new Intent(Activity_Parks.this, Activity_Favorites.class);
-                startActivity(myIntent);
-                finish();
-            }
-        });
-        //TODO: 2. make chats with friends activity
     }
 
     private void initLocation() {
@@ -148,27 +186,10 @@ public class Activity_Parks extends Activity_Base {
         myLocation.setCallBack_location(callBack_location);
     }
 
-
     private void addParksToMap() {
         for (Park park : parks) {
             fragment_map.showPark(park);
         }
-    }
-
-    private void addParksToServer() {
-        Park park1 = new Park().setLat(32.1072849620732).setLon(34.7897869419462).setName("Zilber").setPid("park-1");
-        Park park2 = new Park().setLat(32.1295073636982).setLon(34.7919566281888).setName("Hameyasdim").setPid("park-2");
-        Park park3 = new Park().setLat(32.1220204064956).setLon(34.8414674832841).setName("Adirim").setPid("park-3");
-        Park park4 = new Park().setLat(32.11805684137114).setLon(34.84088085673903).setName("Neve Sharett").setPid("park-4");
-        Park park5 = new Park().setLat(32.1206711205366).setLon(34.8376050971302).setName("Mudai - Tzahala").setPid("park-5");
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Parks");
-        myRef.child(park1.getPid()).setValue(park1);
-        myRef.child(park2.getPid()).setValue(park2);
-        myRef.child(park3.getPid()).setValue(park3);
-        myRef.child(park4.getPid()).setValue(park4);
-        myRef.child(park5.getPid()).setValue(park5);
     }
 
     public void getParksFromServer() {
@@ -190,8 +211,7 @@ public class Activity_Parks extends Activity_Base {
     }
 
     public void onButtonShowPopupWindow(String pid) {
-        LayoutInflater inflater = (LayoutInflater)
-                getSystemService(LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_window, null);
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -215,16 +235,40 @@ public class Activity_Parks extends Activity_Base {
         popup_TXT_title = popupWindow.getContentView().findViewById(R.id.parkfav_TXT_name);
         popup_TXT_distance = popupWindow.getContentView().findViewById(R.id.parkfav_TXT_distance);
         popup_BTN_show = popupWindow.getContentView().findViewById(R.id.parkfav_BTN_showpark);
-        popup_RTB_rating = popupWindow.getContentView().findViewById(R.id.park_RTB_rating);
         popup_TXT_people = popupWindow.getContentView().findViewById(R.id.park_TXT_people);
+        parks_TXT_likes = popupWindow.getContentView().findViewById(R.id.parks_TXT_likes);
+        parks_BTN_likes = popupWindow.getContentView().findViewById(R.id.parks_BTN_likes);
     }
 
     public void initViewsPopup( PopupWindow popupWindow , String pid){
         Park park = findParkByPid(pid);
-        popup_RTB_rating.setRating(3);
         popup_TXT_title.setText(park.getName());
         popup_TXT_people.setText(""+ park.getUsers().size());
-        popup_TXT_distance.setText(fragment_map.getDistance(park.getLat(), park.getLon()) + " m");
+        if(locationAccepted){
+            popup_TXT_distance.setText(fragment_map.getDistance(park.getLat(), park.getLon()) + " m");
+        }
+        if(park.getUserLikes().size()>0){
+            parks_TXT_likes.setText(""+ park.getUserLikes().size());
+        }
+        if(park.checkIfUserLikedPark(currentUser.getUid())){
+            parks_BTN_likes.setImageResource(R.drawable.img_like);
+        }
+
+        parks_BTN_likes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(park.checkIfUserLikedPark(currentUser.getUid())){
+                    parks_BTN_likes.setImageResource(R.drawable.img_emptylike);
+                    park.removeLike(currentUser.getUid());
+                }else {
+                    parks_BTN_likes.setImageResource(R.drawable.img_like);
+                    park.addLike(currentUser.getUid());
+                }
+                myDataBase.updateParkInDataBase(park);
+                parks_TXT_likes.setText(""+ park.getUserLikes().size());
+            }
+        });
+
         popup_BTN_show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -246,28 +290,6 @@ public class Activity_Parks extends Activity_Base {
         return null;
     }
 
-    private void getCurrentUser() {
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(USERS);
-        myRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentUser = dataSnapshot.getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
-    }
-
-    public void updateUserInDataBase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference(USERS);
-        myRef.child(currentUser.getUid()).setValue(currentUser);
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == myLocation.MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION) {
@@ -279,5 +301,19 @@ public class Activity_Parks extends Activity_Base {
         }
     }
 
+    private void addParksToServer() {
+        Park park1 = new Park().setLat(32.1072849620732).setLon(34.7897869419462).setPid("park-1").setAddress("Burla Yehuda 21").setName("Zilber");
+        Park park2 = new Park().setLat(32.1295073636982).setLon(34.7919566281888).setName("Hameyasdim").setPid("park-2").setAddress("Grinverg Or Zvi 25");
+        Park park3 = new Park().setLat(32.1220204064956).setLon(34.8414674832841).setName("Adirim").setPid("park-3").setAddress("Adirim 16");
+        Park park4 = new Park().setLat(32.1180568413711).setLon(34.840880856739).setName("Neve Sharett").setPid("park-4").setAddress("Beit El 8");
+        Park park5 = new Park().setLat(32.1206711205366).setLon(34.8376050971302).setName("Mudai").setPid("park-5").setAddress("Haparsa 7");
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Parks");
+        myRef.child(park1.getPid()).setValue(park1);
+        myRef.child(park2.getPid()).setValue(park2);
+        myRef.child(park3.getPid()).setValue(park3);
+        myRef.child(park4.getPid()).setValue(park4);
+        myRef.child(park5.getPid()).setValue(park5);
+    }
 }

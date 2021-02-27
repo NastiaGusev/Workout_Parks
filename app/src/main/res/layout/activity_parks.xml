@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
 
         android:layout_below="@+id/parks_TXT_title"
-        android:layout_above="@+id/favorites_LAY_menu"
+        android:layout_above="@+id/parks_LAY_menu"
         android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -40,84 +40,20 @@
         >
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/favorites_LAY_menu"
+    <RelativeLayout
+        android:id="@+id/parks_LAY_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
         >
-
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/parks_LAY_bottomButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+        </FrameLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                >
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_home"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_home"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="8dp"
-                    >
-                </ImageButton>
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_parks"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_location2"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_toEndOf="@+id/favorites_BTN_home"
-                    android:layout_alignTop="@+id/favorites_BTN_home"
-                    android:layout_marginStart="48dp"
-                    >
-                </ImageButton>
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_chats"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_chat"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_toEndOf="@+id/favorites_BTN_parks"
-                    android:layout_alignTop="@+id/favorites_BTN_home"
-                    android:layout_marginStart="48dp"
-                    >
-                </ImageButton>
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_favorites"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_favorite_24"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_toEndOf="@+id/favorites_BTN_chats"
-                    android:layout_alignTop="@+id/favorites_BTN_home"
-                    android:layout_marginStart="48dp"
-                    >
-                </ImageButton>
-
-            </RelativeLayout>
-
-        </RelativeLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 
 </RelativeLayout>

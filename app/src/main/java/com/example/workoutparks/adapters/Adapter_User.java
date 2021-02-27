@@ -8,7 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.workoutparks.R;
+import com.example.workoutparks.activities.Activity_Home;
+import com.example.workoutparks.activities.Activity_ParkInfo;
 import com.example.workoutparks.objects.User;
+import com.google.android.material.button.MaterialButton;
+import com.squareup.picasso.Picasso;
 
 
 import java.util.ArrayList;
@@ -17,10 +21,12 @@ public class Adapter_User extends RecyclerView.Adapter<Adapter_User.ViewHolder> 
     private ArrayList<User> mData;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context context;
 
     public Adapter_User(Context context, ArrayList<User> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        this.context = context;
     }
 
     // inflates the row layout from xml when needed
@@ -35,6 +41,10 @@ public class Adapter_User extends RecyclerView.Adapter<Adapter_User.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         User user = mData.get(position);
         holder.user_LBL_username.setText(user.getName());
+        if(!user.getImgURL().equals("")){
+            Picasso.with(context).load(user.getImgURL()).into(holder.user_IMG_userimage);
+        }
+        holder.user_LBL_distance.setText(user.getDescription());
     }
 
     // total number of rows
@@ -61,20 +71,14 @@ public class Adapter_User extends RecyclerView.Adapter<Adapter_User.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView user_IMG_userimage;
         TextView user_LBL_username;
+        TextView user_LBL_distance;
 
         public ViewHolder(View itemView) {
             super(itemView);
             user_IMG_userimage = itemView.findViewById(R.id.user_IMG_userimage);
-            user_LBL_username = itemView.findViewById(R.id.park_LBL_parkname);
+            user_LBL_username = itemView.findViewById(R.id.user_LBL_username);
+            user_LBL_distance = itemView.findViewById(R.id.user_LBL_distance);
 
-//            post_BTN_report.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (mClickListener != null) {
-//                        mClickListener.onReportClick(getAdapterPosition());
-//                    }
-//                }
-//            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

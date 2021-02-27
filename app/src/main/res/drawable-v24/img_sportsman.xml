@@ -117,7 +117,7 @@ C61,24.64,57.87,21.5,54,21.5 Z" />
         android:fillColor="#eac6bb"
         android:pathData="M45,45.5 C45,43.84,46.34,42.5,48,42.5 L48,49.5 L45,49.5 Z" />
     <path
-        android:fillColor="#48cfad"
+        android:fillColor="#79BCA0"
         android:pathData="M51,42.5 C51,43.6,52.34,44.5,54,44.5 S57,43.6,57,42.5 L60,42.5 L60,49.5 L48,49.5
 L48,42.5 Z" />
     <path
@@ -133,7 +133,7 @@ L4,42.5 Z" />
         android:pathData="M15.997,45.5 L16,45.5 L16,42.5 L13,42.5 C14.659,42.502,15.997,43.84,15.997,45.5
 Z" />
     <path
-        android:fillColor="#37bc9b"
+        android:fillColor="#79BCA0"
         android:pathData="M59.997,45.5 L60,45.5 L60,42.5 L57,42.5 C58.659,42.502,59.997,43.84,59.997,45.5
 Z" />
 </vector>

@@ -1,24 +1,25 @@
 package com.example.workoutparks.objects;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class User implements Serializable {
     private String uid = "";
-    private String name = "";
     private String phone = "";
+    private String name = "";
     private String description = "";
     private int age= 0;
     private String gender = "";
+    private String imgURL = "";
     private String currentPark = "";
     private double currentLat = 0.0;
     private double currentLon = 0.0;
-    private ArrayList<String> favParks;
-    private ArrayList<String> friends;
+    private ArrayList<String> favParks = new ArrayList<>();
+    private ArrayList<String> friends = new ArrayList<>();
 
-    public User() {
-        favParks = new ArrayList<>();
-    }
+    public User() { }
 
     public void checkOutOfPark() {
         setCurrentPark("no park");
@@ -35,17 +36,20 @@ public class User implements Serializable {
         return true;
     }
 
-    public void addPark(String pid) {
+    public void addFavPark(String pid) {
         if (!checkIfParkInFav(pid)) {
             favParks.add(pid);
         }
     }
 
-    public void removePark(String pid) {
-        favParks.remove(pid);
+    public void removeFavPark(String pid) {
+        if(checkIfParkInFav(pid)){
+            favParks.remove(pid);
+        }
     }
 
     public boolean checkIfParkInFav(String newPid) {
+        Log.d("TAG", "checkIfParkInFav: " + favParks.size());
         if (favParks.isEmpty()) {
             return false;
         }
@@ -64,7 +68,9 @@ public class User implements Serializable {
     }
 
     public void removeFriend(String userid) {
-        friends.remove(userid);
+        if(checkIfUserInFriends(userid)){
+            friends.remove(userid);
+        }
     }
 
     public boolean checkIfUserInFriends(String newUid) {
@@ -102,6 +108,22 @@ public class User implements Serializable {
         return this;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getUid() {
         return uid;
     }
@@ -136,5 +158,21 @@ public class User implements Serializable {
 
     public double getCurrentLon() {
         return currentLon;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

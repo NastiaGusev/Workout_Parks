@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/groupChat_LAY_navigator"
+        android:layout_above="@+id/groupChat_LAY_menu"
         >
 
         <EditText
@@ -90,86 +90,22 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#e0e0e0"
-        android:layout_alignTop="@+id/groupChat_LAY_navigator"/>
+        android:layout_alignTop="@+id/groupChat_LAY_menu"/>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/groupChat_LAY_navigator"
+    <RelativeLayout
+        android:id="@+id/groupChat_LAY_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
-
-        android:elevation="5dp"
-        app:cardElevation="5dp"
         >
-
-        <RelativeLayout
+        <FrameLayout
+            android:id="@+id/groupChat_LAY_bottomButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+        </FrameLayout>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                >
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_home"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_home"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="8dp"
-                    >
-                </ImageButton>
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_parks"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_location"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_toEndOf="@+id/favorites_BTN_home"
-                    android:layout_alignTop="@+id/favorites_BTN_home"
-                    android:layout_marginStart="48dp"
-                    >
-                </ImageButton>
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_chats"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_chat"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_toEndOf="@+id/favorites_BTN_parks"
-                    android:layout_alignTop="@+id/favorites_BTN_home"
-                    android:layout_marginStart="48dp"
-                    >
-                </ImageButton>
-
-                <ImageButton
-                    android:id="@+id/favorites_BTN_favorites"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/img_favorite_24"
-                    android:background="@android:color/transparent"
-                    android:clickable="true"
-                    android:scaleType="centerCrop"
-                    android:layout_toEndOf="@+id/favorites_BTN_chats"
-                    android:layout_alignTop="@+id/favorites_BTN_home"
-                    android:layout_marginStart="48dp"
-                    >
-                </ImageButton>
-            </RelativeLayout>
-        </RelativeLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+    </RelativeLayout>
 
 </RelativeLayout>

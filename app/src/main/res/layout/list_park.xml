@@ -20,32 +20,19 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <ImageButton
-            android:id="@+id/parkfav_BTN_addToFav"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@android:color/transparent"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:focusableInTouchMode="false"
-            android:scaleType="fitCenter"
-            android:src="@drawable/img_star">
-        </ImageButton>
-
         <TextView
-            android:id="@+id/parkfav_TXT_name"
+            android:id="@+id/park_TXT_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/parkfav_BTN_addToFav"
-           android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
             android:text="This is a popup window."
             android:textSize="18sp"
             android:textStyle="bold" />
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/parkfav_BTN_showpark"
+            android:id="@+id/park_BTN_showpark"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

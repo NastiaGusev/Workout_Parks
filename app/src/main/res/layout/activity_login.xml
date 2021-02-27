@@ -32,10 +32,10 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/login_TXT_title"
         android:hint="@string/phone_number"
-        app:boxStrokeColor="@color/main_color"
-        app:hintTextColor="@color/main_color"
-        app:placeholderTextColor="@color/main_color"
-        app:counterTextColor="@color/main_color"
+        app:boxStrokeColor="@color/turquoise"
+        app:hintTextColor="@color/turquoise"
+        app:placeholderTextColor="@color/turquoise"
+        app:counterTextColor="@color/turquoise"
         >
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
             android:ems="10"
             android:inputType="phone"
             android:textColorHint="@color/grey"
-            android:textColor="@color/main_color"
+            android:textColor="@color/turquoise"
             android:textCursorDrawable="@color/black"
             >
 
@@ -58,10 +58,10 @@
         android:layout_centerInParent="true"
         android:text="@string/continue_"
         app:cornerRadius="150dp"
-        app:strokeColor="@color/main_color"
+        app:strokeColor="@color/turquoise"
         android:textColor="@color/white"
-        app:rippleColor="@color/main_color"
-        android:backgroundTint="@color/main_color"
+        app:rippleColor="@color/turquoise"
+        android:backgroundTint="@color/turquoise"
         >
     </com.google.android.material.button.MaterialButton>
 
