@@ -7,7 +7,7 @@ You can login with your phone number
 
 | Login page               | Home page                    |      
 :-------------------------:|:----------------------------:|
-|![](screenshots/login.jpg width=100)| ![](screenshots/homepage.jpg width=100)|
+|![](screenshots/login.jpg | width=100)| ![](screenshots/homepage.jpg | width=100)|
 
 ## Parks:
 At every park you can see live how many people are at the park, and how many people liked the park. 
