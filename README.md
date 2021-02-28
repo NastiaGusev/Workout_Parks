@@ -5,8 +5,8 @@ A place where you can connect with others who love to work-out, near you!
 ## Login and Home pages:
 You can login with your phone number
 
-| Login page               | Home page                |      
-:-------------------------:|:-------------------------:
+| Login page               | Home page                    |      
+:-------------------------:|:----------------------------:|
 |![](screenshots/login.jpg)| ![](screenshots/homepage.jpg)|
 
 ## Parks:
