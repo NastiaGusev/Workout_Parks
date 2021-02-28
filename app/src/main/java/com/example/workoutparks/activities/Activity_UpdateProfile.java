@@ -111,6 +111,7 @@ public class Activity_UpdateProfile extends Activity_Base {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isDoublePressToClose = true;
         setContentView(R.layout.activity__update_profile);
         findViews();
         initBottomFragment();

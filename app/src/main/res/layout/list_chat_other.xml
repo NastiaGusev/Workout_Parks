@@ -5,27 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/listOther_TXT_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/listOther_IMG_user"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="15dp"
-        android:layout_centerHorizontal="true"
-        android:text=""
-        android:textColor="@color/light_grey2" />
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_user"
+        app:shapeAppearanceOverlay="@style/CircleImageView">
+    </com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
         android:id="@+id/listOther_TXT_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+       android:layout_marginStart="10dp"
+        android:layout_alignTop="@+id/listOther_IMG_user"
+        android:layout_toEndOf="@+id/listOther_IMG_user"
         android:text="John Grady Cole"
         android:textSize="12sp"
-        android:textStyle="bold"
-        android:layout_below="@+id/listOther_TXT_date"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="8dp"
-         />
+        android:textStyle="bold" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/listOther_CRD_msg"

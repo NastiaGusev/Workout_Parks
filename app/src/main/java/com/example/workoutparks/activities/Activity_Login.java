@@ -68,7 +68,6 @@ public class Activity_Login extends Activity_Base {
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks OnVerificationStateChangedCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         @Override
         public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-            Log.d("pttt", "onCodeSent: "  + verificationId);
             login_state = LOGIN_STATE.ENTERING_CODE;
             updateUI();
         }
@@ -80,7 +79,6 @@ public class Activity_Login extends Activity_Base {
 
         @Override
         public void onVerificationFailed(FirebaseException e) {
-            Log.d("pttt", "onVerificationFailed " + e.getMessage());
             e.printStackTrace();
             Toast.makeText(Activity_Login.this, "VerificationFailed" + e.getMessage(), Toast.LENGTH_SHORT).show();
             login_state = LOGIN_STATE.ENTERING_NUMBER;
@@ -97,7 +95,6 @@ public class Activity_Login extends Activity_Base {
     private void codeEntered() {
         login_EDT_phone.setError(null);
         String smsVerificationCode = login_EDT_phone.getEditText().getText().toString();
-        Log.d("pttt", "verificationCode: " + smsVerificationCode);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         FirebaseAuthSettings firebaseAuthSettings = firebaseAuth.getFirebaseAuthSettings();
@@ -115,7 +112,6 @@ public class Activity_Login extends Activity_Base {
     private void startLoginProcess() {
         login_EDT_phone.setError(null);
         phone_input = login_EDT_phone.getEditText().getText().toString();
-        Log.d("pttt", "phone: " + phone_input);
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(firebaseAuth)
@@ -134,12 +130,10 @@ public class Activity_Login extends Activity_Base {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("pttt", "signInWithCredential:success");
                             Intent myIntent = new Intent(Activity_Login.this, Activity_Home.class);
                             startActivity(myIntent);
                             finish();
                         } else {
-                            Log.w("pttt", "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 login_EDT_phone.setError("Wrong code!");
                                 updateUI();

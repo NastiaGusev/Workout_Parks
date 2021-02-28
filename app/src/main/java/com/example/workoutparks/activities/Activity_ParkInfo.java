@@ -43,11 +43,12 @@ public class Activity_ParkInfo extends Activity_Base {
     public static final String PARK = "PARK";
     public static final String USERS = "Users";
     public static final String PARKS = "Parks";
+
     private User currentUser;
     private Park thisPark;
     private ArrayList<Park> parks = new ArrayList<>();
     private ArrayList<User> usersInPark = new ArrayList<>();
-    private Distance distance  = new Distance();
+    private Distance distance = new Distance();
     private MyDataBase myDatabase = new MyDataBase();
 
     private RecyclerView parkInfo_LST_userList;
@@ -64,7 +65,6 @@ public class Activity_ParkInfo extends Activity_Base {
     private ImageButton parkInfo_BTN_navigate;
     private TextView parkInfo_TXT_likes;
     private TextView parkInfo_TXT_people;
-
     private FrameLayout parkInfo_LAY_bottomButtons;
     private Fragment_bottomButtons fragment_buttons;
 
@@ -109,16 +109,16 @@ public class Activity_ParkInfo extends Activity_Base {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_park_info);
+        isDoublePressToClose = true;
         thisPark = (Park) getIntent().getSerializableExtra(PARK);
-        initBottomFragment();
         findViews();
+        initBottomFragment();
         initViews();
         getParksFromDatabase();
         getCurrentUser();
     }
 
     private void initBottomFragment() {
-        parkInfo_LAY_bottomButtons = findViewById(R.id.parkInfo_LAY_bottomButtons);
         fragment_buttons = new Fragment_bottomButtons();
         fragment_buttons.setCallBack_Home(callBack_home);
         fragment_buttons.setCallBack_Parks(callBack_parks);
@@ -130,6 +130,7 @@ public class Activity_ParkInfo extends Activity_Base {
     }
 
     private void findViews() {
+        parkInfo_LAY_bottomButtons = findViewById(R.id.parkInfo_LAY_bottomButtons);
         parkInfo_LST_userList = findViewById(R.id.parkInfo_LST_userList);
         parkInfo_IBTN_chat = findViewById(R.id.parkInfo_IBTN_chat);
         parkInfo_BTN_addToFav = findViewById(R.id.parkInfo_BTN_addToFav);
@@ -138,7 +139,7 @@ public class Activity_ParkInfo extends Activity_Base {
         parkInfo_BTN_checkIn = findViewById(R.id.parkInfo_BTN_checkIn);
         parkInfo_TXT_checkIn = findViewById(R.id.parkInfo_TXT_checkIn);
         parkInfo_IMG_placeholder = findViewById(R.id.parkInfo_IMG_placeholder);
-        parkInfo_BTN_likes =findViewById(R.id.parkInfo_BTN_likes);
+        parkInfo_BTN_likes = findViewById(R.id.parkInfo_BTN_likes);
         parkInfo_TXT_likes = findViewById(R.id.parkInfo_TXT_likes);
         parkInfo_TXT_people = findViewById(R.id.parkInfo_TXT_people);
         parkInfo_BTN_navigate = findViewById(R.id.parkInfo_BTN_navigate);
@@ -148,7 +149,7 @@ public class Activity_ParkInfo extends Activity_Base {
         parkInfo_TXT_parkTitle.setText(thisPark.getName());
         parkInfo_TXT_parkAddress.setText(thisPark.getAddress());
         parkInfo_TXT_likes.setText("" + thisPark.getUserLikes().size());
-        parkInfo_TXT_people.setText("" );
+        parkInfo_TXT_people.setText("");
 
         parkInfo_BTN_navigate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,17 +157,9 @@ public class Activity_ParkInfo extends Activity_Base {
                 navigateToPark();
             }
         });
-
-        parkInfo_IBTN_chat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_GroupChat.class);
-                myIntent.putExtra(Activity_ParkInfo.PARK, thisPark);
-                startActivity(myIntent);
-            }
-        });
     }
 
+    //Open google navigation to park
     private void navigateToPark() {
         Uri gmIntentUri = Uri.parse("google.navigation:q=" + thisPark.getLat() + "," + thisPark.getLon() + "&mode=w");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmIntentUri);
@@ -249,6 +242,7 @@ public class Activity_ParkInfo extends Activity_Base {
         return -1;
     }
 
+    //Add user to list and to the recycle view
     private void addUserToList(User user) {
         if (user.getUid().equals(currentUser.getUid())) {
             usersInPark.add(0, user);
@@ -261,6 +255,7 @@ public class Activity_ParkInfo extends Activity_Base {
         parkInfo_TXT_people.setText("" + usersInPark.size());
     }
 
+    //remove user from the users list, and from the recyle view
     private void removeUserFromList(User user) {
         int position = checkIfUserInPark(user);
         usersInPark.remove(position);
@@ -276,7 +271,7 @@ public class Activity_ParkInfo extends Activity_Base {
             @Override
             public void onItemClick(View view, int position) {
                 //Go to profile of the user (can't go to current user's profile)
-                if(!usersInPark.get(position).getUid().equals(currentUser.getUid())){
+                if (!usersInPark.get(position).getUid().equals(currentUser.getUid())) {
                     Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_UserProfile.class);
                     myIntent.putExtra(Activity_UserProfile.USER, usersInPark.get(position));
                     myIntent.putExtra(Activity_UserProfile.CURRENT_USER, currentUser);
@@ -289,24 +284,22 @@ public class Activity_ParkInfo extends Activity_Base {
         parkInfo_LST_userList.setAdapter(adapter_user);
     }
 
-
-
     private void initLikes() {
-        if(thisPark.checkIfUserLikedPark(currentUser.getUid())){
+        if (thisPark.checkIfUserLikedPark(currentUser.getUid())) {
             parkInfo_BTN_likes.setImageResource(R.drawable.img_like);
         }
         parkInfo_BTN_likes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(thisPark.checkIfUserLikedPark(currentUser.getUid())){
+                if (thisPark.checkIfUserLikedPark(currentUser.getUid())) {
                     parkInfo_BTN_likes.setImageResource(R.drawable.img_emptylike);
                     thisPark.removeLike(currentUser.getUid());
-                }else {
+                } else {
                     parkInfo_BTN_likes.setImageResource(R.drawable.img_like);
                     thisPark.addLike(currentUser.getUid());
                 }
                 myDatabase.updateParkInDataBase(thisPark);
-                parkInfo_TXT_likes.setText(""+ thisPark.getUserLikes().size());
+                parkInfo_TXT_likes.setText("" + thisPark.getUserLikes().size());
             }
         });
     }
@@ -314,6 +307,7 @@ public class Activity_ParkInfo extends Activity_Base {
     public void initCheckIn() {
         if (currentUser.getCurrentPark().equals(thisPark.getPid())) {
             changeCheckOut();
+            initChatButton(true);
         }
         parkInfo_BTN_checkIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -321,31 +315,61 @@ public class Activity_ParkInfo extends Activity_Base {
                 if (distance.getDistance(currentUser.getCurrentLat(), currentUser.getCurrentLon(), thisPark.getLat(), thisPark.getLon()) > 500) {
                     //User is too far away to check in park
                     Toast.makeText(Activity_ParkInfo.this, "You are too far away!", Toast.LENGTH_SHORT).show();
+                    initChatButton(false);
                 } else {
                     if (!currentUser.checkIfInPark()) {
-                        //The user is not in any park
+                        //The user is not in any park, and is close enough to this park
                         thisPark.addUser(currentUser.getUid());
                         currentUser.setCurrentPark(thisPark.getPid());
+                        initChatButton(true);
                         changeCheckOut();
                     } else if (currentUser.getCurrentPark().equals(thisPark.getPid())) {
                         //If user is already in park- check him out
                         currentUser.checkOutOfPark();
                         thisPark.removeUser(currentUser.getUid());
+                        initChatButton(false);
                         changeCheckIn();
                     } else {
-                        //The user checked in other park
+                        //The user checked-in other park
                         String pid = currentUser.getCurrentPark();
                         for (Park park : parks) {
                             if (pid.equals(park.getPid())) {
                                 Toast.makeText(Activity_ParkInfo.this, "You checked in " + park.getName(), Toast.LENGTH_SHORT).show();
                             }
                         }
+                        initChatButton(false);
                     }
                     myDatabase.updateParkInDataBase(thisPark);
                     myDatabase.updateUserInDataBase(currentUser);
                 }
             }
         });
+    }
+
+    //Change the button if the user is checked in or not
+    public void initChatButton(boolean enter) {
+        if(enter) {
+            parkInfo_IBTN_chat.setOnClickListener(null);
+            parkInfo_IBTN_chat.setClickable(true);
+            Toast.makeText(Activity_ParkInfo.this, "You can enter chat!", Toast.LENGTH_SHORT).show();
+            parkInfo_IBTN_chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent myIntent = new Intent(Activity_ParkInfo.this, Activity_GroupChat.class);
+                    myIntent.putExtra(Activity_ParkInfo.PARK, thisPark);
+                    startActivity(myIntent);
+                }
+            });
+        } else {
+            parkInfo_IBTN_chat.setOnClickListener(null);
+            parkInfo_IBTN_chat.setClickable(false);
+            parkInfo_IBTN_chat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(Activity_ParkInfo.this, "You have to be checked in!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     public void initFavPark() {

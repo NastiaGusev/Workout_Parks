@@ -10,10 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,6 +43,7 @@ import java.util.ArrayList;
 public class Activity_Parks extends Activity_Base {
 
     public static final String USERS = "Users";
+    public static final String PARKS = "Parks";
     private Fragment_Map fragment_map;
     private MaterialCardView parks_LAY_map;
     private MyLocation myLocation;
@@ -130,6 +129,7 @@ public class Activity_Parks extends Activity_Base {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parks);
+        isDoublePressToClose = true;
         //addParksToServer();
         getCurrentUser();
         findView();
@@ -194,7 +194,7 @@ public class Activity_Parks extends Activity_Base {
 
     public void getParksFromServer() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Parks");
+        DatabaseReference myRef = database.getReference(PARKS);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -245,7 +245,18 @@ public class Activity_Parks extends Activity_Base {
         popup_TXT_title.setText(park.getName());
         popup_TXT_people.setText(""+ park.getUsers().size());
         if(locationAccepted){
-            popup_TXT_distance.setText(fragment_map.getDistance(park.getLat(), park.getLon()) + " m");
+            int distance = fragment_map.getDistance(park.getLat(), park.getLon());
+            if(distance<1000){
+                popup_TXT_distance.setText(distance + " m");
+            } else {
+                int km = distance/1000;
+                int meters = (distance%1000)/100;
+                if(meters > 0){
+                    popup_TXT_distance.setText(km + "." + meters + " km" );
+                } else {
+                    popup_TXT_distance.setText(km + " km");
+                }
+            }
         }
         if(park.getUserLikes().size()>0){
             parks_TXT_likes.setText(""+ park.getUserLikes().size());
@@ -301,15 +312,28 @@ public class Activity_Parks extends Activity_Base {
         }
     }
 
+    //Function to upload parks to database
     private void addParksToServer() {
         Park park1 = new Park().setLat(32.1072849620732).setLon(34.7897869419462).setPid("park-1").setAddress("Burla Yehuda 21").setName("Zilber");
         Park park2 = new Park().setLat(32.1295073636982).setLon(34.7919566281888).setName("Hameyasdim").setPid("park-2").setAddress("Grinverg Or Zvi 25");
         Park park3 = new Park().setLat(32.1220204064956).setLon(34.8414674832841).setName("Adirim").setPid("park-3").setAddress("Adirim 16");
         Park park4 = new Park().setLat(32.1180568413711).setLon(34.840880856739).setName("Neve Sharett").setPid("park-4").setAddress("Beit El 8");
         Park park5 = new Park().setLat(32.1206711205366).setLon(34.8376050971302).setName("Mudai").setPid("park-5").setAddress("Haparsa 7");
+        Park park6 = new Park().setLat(32.1219961946436).setLon(34.8064388411185).setPid("park-6").setAddress("Hamitnadev 27").setName("Hamitnadev");
+        Park park7 = new Park().setLat(32.1195040605764).setLon(34.8009018530402).setPid("park-7").setAddress("Geiger 14").setName("Geiger");
+        Park park8 = new Park().setLat(32.1174493196349).setLon(34.7924749076319).setPid("park-8").setAddress("Shmuel Tamir 17").setName("Shmuel Tamir");
+        Park park9 = new Park().setLat(32.1136086634028).setLon(34.8176545709979).setPid("park-9").setAddress("Mivtsa Kadesh 34").setName("Mivtsa Kadesh");
+        Park park10 = new Park().setLat(32.12015738425).setLon(34.8158862698504).setPid("park-10").setAddress("Mizan 16").setName("Krispin");
+        Park park11 = new Park().setLat(32.0827796024752).setLon(34.7674008985394).setPid("park-11").setAddress("Gordon Yehuda Liv 9").setName("Gordon Beach");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Parks");
+        myRef.child(park6.getPid()).setValue(park6);
+        myRef.child(park7.getPid()).setValue(park7);
+        myRef.child(park8.getPid()).setValue(park8);
+        myRef.child(park9.getPid()).setValue(park9);
+        myRef.child(park10.getPid()).setValue(park10);
+        myRef.child(park11.getPid()).setValue(park11);
         myRef.child(park1.getPid()).setValue(park1);
         myRef.child(park2.getPid()).setValue(park2);
         myRef.child(park3.getPid()).setValue(park3);

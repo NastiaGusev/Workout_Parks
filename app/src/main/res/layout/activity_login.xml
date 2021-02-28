@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="phone"
-            android:textColorHint="@color/grey"
+            android:textColorHint="@color/light_grey2"
             android:textColor="@color/turquoise"
             android:textCursorDrawable="@color/black"
             >

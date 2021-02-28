@@ -40,19 +40,21 @@ public class Activity_GroupChat extends Activity_Base {
 
     public static final String PARK = "PARK";
     public static final String MESSAGES = "Messages";
+    public static final String USERS = "Users";
+
     private Park thisPark;
     private String uid;
     private User user;
     private DatabaseReference messageDB;
-
+    private ArrayList<User> users = new ArrayList<>();
     private List<Message> messages;
     private Adapter_Message adapter_message;
+
     private RecyclerView groupChat_RCV_recycleView;
     private EditText groupChat_TXT_message;
     private ImageButton groupChat_IBTN_send;
     private ImageButton groupChat_BTN_back;
     private TextView groupChat_TXT_title;
-
     private FrameLayout groupChat_LAY_bottomButtons;
     private Fragment_bottomButtons fragment_buttons;
 
@@ -97,16 +99,16 @@ public class Activity_GroupChat extends Activity_Base {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_chat);
-
+        isDoublePressToClose = true;
         thisPark = (Park) getIntent().getSerializableExtra(PARK);
-        initBottomFragment();
+        getUsersFromPark();
         findViews();
+        initBottomFragment();
         initViews();
         initUser();
     }
 
     private void initBottomFragment() {
-        groupChat_LAY_bottomButtons = findViewById(R.id.groupChat_LAY_bottomButtons);
         fragment_buttons = new Fragment_bottomButtons();
         fragment_buttons.setCallBack_Home(callBack_home);
         fragment_buttons.setCallBack_Parks(callBack_parks);
@@ -118,6 +120,7 @@ public class Activity_GroupChat extends Activity_Base {
     }
 
     private void findViews() {
+        groupChat_LAY_bottomButtons = findViewById(R.id.groupChat_LAY_bottomButtons);
         groupChat_RCV_recycleView = findViewById(R.id.groupChat_RCV_recycleView);
         groupChat_TXT_message = findViewById(R.id.groupChat_TXT_message);
         groupChat_IBTN_send = findViewById(R.id.groupChat_IBTN_send);
@@ -138,6 +141,24 @@ public class Activity_GroupChat extends Activity_Base {
         });
     }
 
+    private void getUsersFromPark() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference(USERS);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot key : snapshot.getChildren()) {
+                    User user = key.getValue(User.class);
+                    users.add(user);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
     private void initUser() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         uid = auth.getCurrentUser().getUid();
@@ -146,6 +167,7 @@ public class Activity_GroupChat extends Activity_Base {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 user = snapshot.getValue(User.class);
+                //after getting the user - can initialize the messages
                 initMessageDB();
                 readMessage();
                 initMessages();
@@ -162,6 +184,7 @@ public class Activity_GroupChat extends Activity_Base {
         messageDB = dataBase.getReference(MESSAGES).child(thisPark.getPid());
     }
 
+    //Get the text from the edit text when clicking send
     private void readMessage() {
         groupChat_IBTN_send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,7 +255,7 @@ public class Activity_GroupChat extends Activity_Base {
 
     private void displayMessages(List<Message> messages) {
         groupChat_RCV_recycleView.setLayoutManager(new LinearLayoutManager(Activity_GroupChat.this));
-        adapter_message = new Adapter_Message(Activity_GroupChat.this, messages, messageDB, uid);
+        adapter_message = new Adapter_Message(Activity_GroupChat.this, messages, messageDB, uid, users);
         groupChat_RCV_recycleView.setAdapter(adapter_message);
         groupChat_RCV_recycleView.scrollToPosition(adapter_message.getItemCount() -1);
     }

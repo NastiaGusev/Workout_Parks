@@ -65,8 +65,7 @@
         android:layout_below="@+id/profile_TXT_ageGender"
         android:layout_marginTop="5dp"
         android:text=""
-        android:textSize="14sp"
-        android:textStyle="italic">
+        android:textSize="14sp">
     </TextView>
 
     <TextView

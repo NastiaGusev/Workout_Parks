@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Activity_UpdateProfile">
+    tools:context=".activities.Activity_UpdateProfile"
+    >
 
     <TextView
         android:id="@+id/updateProfile_TXT_title"
@@ -67,7 +68,8 @@
             android:inputType="text"
             android:textColor="@color/grey"
             android:textColorHint="@color/light_grey2"
-            android:textCursorDrawable="@color/black">
+            android:textCursorDrawable="@color/black"
+            >
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -220,12 +222,11 @@
         android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
         >
+
         <FrameLayout
             android:id="@+id/updateProfile_LAY_bottomButtons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-        </FrameLayout>
+            android:layout_height="wrap_content"></FrameLayout>
 
     </RelativeLayout>
 

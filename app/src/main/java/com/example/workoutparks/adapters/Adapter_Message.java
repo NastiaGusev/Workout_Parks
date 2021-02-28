@@ -1,44 +1,38 @@
 package com.example.workoutparks.adapters;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.workoutparks.R;
 import com.example.workoutparks.objects.Message;
 import com.example.workoutparks.objects.User;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter_Message extends RecyclerView.Adapter {
 
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
-    Context context;
-    List<Message> messages;
-    DatabaseReference messageDB;
-    String uid;
+    private Context context;
+    private List<Message> messages;
+    private DatabaseReference messageDB;
+    private String uid;
+    private ArrayList<User> users = new ArrayList<>();
 
-    public Adapter_Message(Context context, List<Message> messages, DatabaseReference messageDB,String uid) {
+    public Adapter_Message(Context context, List<Message> messages, DatabaseReference messageDB, String uid, ArrayList<User> users) {
         this.context = context;
         this.messages = messages;
         this.messageDB = messageDB;
         this.uid = uid;
+        this.users = users;
     }
 
     @Override
@@ -84,20 +78,39 @@ public class Adapter_Message extends RecyclerView.Adapter {
         }
     }
 
+    private User findUser(String uid) {
+        for (User user : users) {
+            if (user.getUid().equals(uid)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
     private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-        TextView  listOther_TXT_username, listOther_TXT_time, listOther_TXT_msg;
+        TextView listOther_TXT_username, listOther_TXT_time, listOther_TXT_msg;
+        ShapeableImageView listOther_IMG_user;
 
         ReceivedMessageHolder(@NonNull View itemView) {
             super(itemView);
-            listOther_TXT_msg = (TextView) itemView.findViewById(R.id.listOther_TXT_msg);
-            listOther_TXT_time = (TextView) itemView.findViewById(R.id.listOther_TXT_time);
-            listOther_TXT_username = (TextView) itemView.findViewById(R.id.listOther_TXT_username);
+            listOther_TXT_msg = itemView.findViewById(R.id.listOther_TXT_msg);
+            listOther_TXT_time = itemView.findViewById(R.id.listOther_TXT_time);
+            listOther_TXT_username = itemView.findViewById(R.id.listOther_TXT_username);
+            listOther_IMG_user = itemView.findViewById(R.id.listOther_IMG_user);
         }
 
         void bind(Message message) {
+            User user = findUser(message.getUid());
             listOther_TXT_msg.setText(message.getMessage());
-            listOther_TXT_username.setText(message.getName());
             listOther_TXT_time.setText(message.getTime());
+            if (user == null) {
+                listOther_TXT_username.setText(message.getName());
+            } else {
+                listOther_TXT_username.setText(user.getName());
+                if (!user.getImgURL().equals("")) {
+                    Picasso.with(context).load(user.getImgURL()).into(listOther_IMG_user);
+                }
+            }
         }
     }
 
@@ -106,7 +119,6 @@ public class Adapter_Message extends RecyclerView.Adapter {
 
         SentMessageHolder(@NonNull View itemView) {
             super(itemView);
-
             listOther_TXT_msg = itemView.findViewById(R.id.listOther_TXT_msg);
             listOther_TXT_time = itemView.findViewById(R.id.listOther_TXT_time);
         }

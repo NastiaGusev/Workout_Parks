@@ -17,24 +17,49 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkoutParks">
-        <activity android:name=".activities.Activity_UserProfile"></activity>
-        <activity android:name=".activities.Activity_UpdateProfile" />
-        <activity android:name=".activities.Activity_Favorites" />
+        <activity
+            android:name=".activities.Activity_UserProfile"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait">
+        </activity>
+        <activity
+            android:name=".activities.Activity_UpdateProfile"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait"/>
+        <activity
+            android:name=".activities.Activity_Favorites"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait"/>
         <activity
             android:name=".activities.Activity_GroupChat"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".activities.Activity_ParkInfo" />
+            android:windowSoftInputMode="adjustPan"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait"/>
+        <activity
+            android:name=".activities.Activity_ParkInfo"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBEr6hQlYrpubjUqs9jztjD5rUa7qqYrqc" />
+            android:value="AIzaSyBEr6hQlYrpubjUqs9jztjD5rUa7qqYrqc"
+            />
 
-        <activity android:name=".activities.Activity_Parks" />
-        <activity android:name=".activities.Activity_Login" />
-        <activity android:name=".activities.Activity_Home">
+        <activity
+            android:name=".activities.Activity_Parks"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait"/>
+        <activity
+            android:name=".activities.Activity_Login"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait"/>
+        <activity
+            android:name=".activities.Activity_Home"
+            android:configChanges="orientation|screenLayout|screenSize|layoutDirection"
+            android:screenOrientation="sensorPortrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.MAIN"
+                    />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

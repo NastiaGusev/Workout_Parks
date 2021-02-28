@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,21 +16,18 @@
         android:text=""
         android:textColor="@color/grey"
         android:textSize="18sp"
-        android:textStyle="italic"
-        >
-    </TextView>
+        android:textStyle="italic"></TextView>
 
     <ImageButton
         android:id="@+id/home_BTN_signout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_signout"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         android:focusableInTouchMode="false"
         android:scaleType="fitCenter"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
-        >
+        android:src="@drawable/img_signout">
 
     </ImageButton>
 
@@ -39,13 +35,13 @@
         android:id="@+id/home_IMG_user"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/img_user"
-        app:shapeAppearanceOverlay="@style/CircleImageView"
         android:layout_below="@+id/home_LBL_welcome"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:scaleType="centerCrop"
-        >
+        android:src="@drawable/img_user"
+        app:shapeAppearanceOverlay="@style/CircleImageView">
+
     </com.google.android.material.imageview.ShapeableImageView>
 
     <TextView
@@ -54,123 +50,141 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/home_IMG_user"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
         android:text=""
         android:textColor="@color/grey"
         android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="20dp"
-        >
-
+        android:textStyle="bold">
     </TextView>
 
-    <ImageView
-        android:id="@+id/home_IMG_parks"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/img_icon"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="40dp"
+    <RelativeLayout
+        android:id="@+id/home_LAY_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/park_LBL_parkname"
-        >
-    </ImageView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_BTN_parks"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/home_IMG_parks"
-        android:layout_alignStart="@+id/home_IMG_parks"
-        android:layout_marginTop="2dp"
-        android:backgroundTint="@color/main_color"
-        android:text="parks"
-        android:textColor="@color/white"
-        android:textSize="11sp"
-        app:cornerRadius="150dp"
-        app:rippleColor="@color/main_color"
-        app:strokeColor="@color/main_color">
-
-    </com.google.android.material.button.MaterialButton>
-
-    <ImageView
-        android:id="@+id/home_IMG_favorites"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/img_star"
-        android:layout_alignTop="@+id/home_IMG_parks"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="40dp"
-        >
-    </ImageView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_BTN_favorites"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/home_IMG_favorites"
-        android:layout_alignEnd="@+id/home_IMG_favorites"
-        android:text="favorites"
-        app:cornerRadius="150dp"
-        android:textSize="11sp"
-        app:strokeColor="@color/main_color"
-        android:textColor="@color/white"
-        app:rippleColor="@color/main_color"
-        android:backgroundTint="@color/main_color"
-        >
-    </com.google.android.material.button.MaterialButton>
-
-
-    <ImageView
-        android:id="@+id/home_IMG_settings"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_below="@+id/home_BTN_favorites"
-        android:layout_alignEnd="@+id/home_IMG_favorites"
         android:layout_marginTop="10dp"
-        android:src="@drawable/img_settings">
+        android:layout_centerHorizontal="true">
 
-    </ImageView>
+        <ImageButton
+            android:id="@+id/home_BTN_parks"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_placeholdergreen">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/home_TXT_parks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/home_BTN_parks"
+            android:layout_alignStart="@+id/home_BTN_parks"
+            android:layout_alignEnd="@+id/home_BTN_parks"
+            android:gravity="center"
+            android:text="Parks"
+            android:textAllCaps="true"
+            android:textSize="13sp">
+
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/home_BTN_favorites"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="40dp"
+            android:layout_toEndOf="@+id/home_BTN_parks"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_star">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/home_TXT_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/home_BTN_favorites"
+            android:layout_alignStart="@+id/home_BTN_favorites"
+            android:layout_alignEnd="@+id/home_BTN_favorites"
+            android:gravity="center"
+            android:text="favorites"
+            android:textAllCaps="true"
+            android:textSize="13sp">
+
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/home_BTN_settings"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/home_TXT_favorites"
+            android:layout_alignStart="@+id/home_TXT_favorites"
+            android:layout_marginTop="40dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_settingshome">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/home_TXT_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/home_BTN_settings"
+            android:layout_alignStart="@+id/home_BTN_favorites"
+            android:layout_alignEnd="@+id/home_BTN_favorites"
+            android:gravity="center"
+            android:text="settings"
+            android:textAllCaps="true"
+            android:textSize="13sp">
+
+        </TextView>
+
+        <ImageButton
+            android:id="@+id/home_BTN_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/home_TXT_parks"
+            android:layout_alignTop="@+id/home_BTN_settings"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/img_user_home">
+
+        </ImageButton>
+
+        <TextView
+            android:id="@+id/home_TXT_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/home_BTN_profile"
+            android:layout_alignStart="@+id/home_BTN_parks"
+            android:layout_alignEnd="@+id/home_BTN_parks"
+            android:gravity="center"
+            android:text="profile"
+            android:textAllCaps="true"
+            android:textSize="13sp">
+
+        </TextView>
+
+
+    </RelativeLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_BTN_settings"
-        android:layout_width="120dp"
+        android:id="@+id/home_BTN_checkIn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/home_IMG_settings"
-        android:layout_alignEnd="@+id/home_IMG_favorites"
-        android:text="settings"
-        app:cornerRadius="150dp"
-        android:textSize="11sp"
-        app:strokeColor="@color/main_color"
-        android:textColor="@color/white"
-        app:rippleColor="@color/main_color"
-        android:backgroundTint="@color/main_color"
-        >
-    </com.google.android.material.button.MaterialButton>
-
-    <ImageView
-        android:id="@+id/home_IMG_friends"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/img_friends"
-        android:layout_below="@+id/home_BTN_parks"
+        android:text=""
+        android:textColor="@color/turquoise"
+        android:textStyle="bold"
+        android:layout_below="@+id/home_LAY_buttons"
+        android:layout_centerHorizontal="true"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_marginTop="10dp"
-        android:layout_alignStart="@+id/home_IMG_parks"
-        >
-    </ImageView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/home_BTN_friends"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/home_IMG_friends"
-        android:layout_alignStart="@+id/home_IMG_parks"
-        android:text="friends"
-        android:textSize="11sp"
-        app:cornerRadius="150dp"
-        app:strokeColor="@color/main_color"
-        android:textColor="@color/white"
-        app:rippleColor="@color/main_color"
-        android:backgroundTint="@color/main_color"
         >
     </com.google.android.material.button.MaterialButton>
+
 
 </RelativeLayout>

@@ -72,13 +72,12 @@ public class Activity_Favorites extends Activity_Base {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__favorites);
-        initBottomFragment();
         findViews();
+        initBottomFragment();
         getCurrentUser();
     }
 
     private void initBottomFragment() {
-        favorites_LAY_bottomButtons = findViewById(R.id.favorites_LAY_bottomButtons);
         fragment_buttons = new Fragment_bottomButtons();
         fragment_buttons.setCallBack_Home(callBack_home);
         fragment_buttons.setCallBack_Parks(callBack_parks);
@@ -89,6 +88,7 @@ public class Activity_Favorites extends Activity_Base {
     }
 
     private void findViews() {
+        favorites_LAY_bottomButtons = findViewById(R.id.favorites_LAY_bottomButtons);
         favorites_LST_userList = findViewById(R.id.favorites_LST_userList);
     }
 
@@ -96,7 +96,6 @@ public class Activity_Favorites extends Activity_Base {
     public void getParksFromServer() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference(PARKS);
-
         if (favorites_LST_userList.getAdapter() == null) {
             initListAdapter();
         }

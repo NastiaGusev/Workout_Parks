@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">Workout Parks</string>
-
     <string name="phone_number">Phone Number</string>
     <string name="enter_code">Enter Code</string>
     <string name="ok">Ok</string>
     <string name="continue_">Continue</string>
     <string name="login">Login</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
